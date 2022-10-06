@@ -2,6 +2,7 @@ package controller;
 
 import model.ClassProductList;
 import model.Product;
+import model.UserInformation;
 
 public class Facade {
     /**
@@ -78,7 +79,7 @@ public class Facade {
      * Creates a user Object
      * @param userinfoitem info about user to create.
      */
-    public void createUser(userInformation userinfoitem) {}
+    public void createUser(UserInformation userinfoitem) {}
 
     /**
      * Creates the product list of the entire system.
