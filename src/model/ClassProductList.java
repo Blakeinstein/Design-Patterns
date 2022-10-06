@@ -1,4 +1,4 @@
-package Facade;
+package model;
 
 public class ClassProductList {
 }

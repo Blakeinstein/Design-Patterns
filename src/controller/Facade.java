@@ -1,4 +1,7 @@
-package Facade;
+package controller;
+
+import model.ClassProductList;
+import model.Product;
 
 public class Facade {
     /**
