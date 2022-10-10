@@ -1,8 +1,8 @@
 package controller;
 
-import model.ClassProductList;
-import model.Product;
-import model.UserInformation;
+import models.ClassProductList;
+import models.Product;
+import models.UserInformation;
 
 public class Facade {
     /**
@@ -77,9 +77,9 @@ public class Facade {
 
     /**
      * Creates a user Object
-     * @param userinfoitem info about user to create.
+     * @param userInfoItem info about user to create.
      */
-    public void createUser(UserInformation userinfoitem) {}
+    public void createUser(UserInformation userInfoItem) {}
 
     /**
      * Creates the product list of the entire system.
