@@ -1,5 +1,7 @@
 package models;
 
+import controller.NodeVisitor;
+
 import java.util.ArrayList;
 
 /**
