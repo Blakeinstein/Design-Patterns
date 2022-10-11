@@ -13,7 +13,7 @@ public class Login {
     public static enum UserType {
         Buyer, Seller
     }
-    private class LoginData {
+    public class LoginData {
         public String name;
         public String password;
         public Person person;
@@ -26,19 +26,16 @@ public class Login {
             this.userType = userType;
         }
     }
-    private Login instance = null;
+    private static Login instance = null;
     private ArrayList<LoginData> users;
 
     private Login() {
+        this.users = new ArrayList<>();
         String buyerInfo = Input.GetBuyerInfo();
         String sellerInfo = Input.GetSellerInfo();
         try {
-            BufferedReader br = Utils.GetBufferedReader(buyerInfo);
-            String line = null;
-
-            while ( (line = br.readLine()) != null) {
-                String[] parts = line.split(":");
-                assert parts.length == 2 : "Invalid data";
+            var buyerInfoPairs = Utils.GetPairs(buyerInfo);
+            for (var parts : buyerInfoPairs) {
                 this.users.add(new LoginData(
                         parts[0],
                         parts[1],
@@ -46,11 +43,8 @@ public class Login {
                         UserType.Buyer
                 ));
             }
-            br = Utils.GetBufferedReader(sellerInfo);
-
-            while ( (line = br.readLine()) != null) {
-                String[] parts = line.split(":");
-                assert parts.length == 2 : "Invalid data";
+            var sellerInfoPairs = Utils.GetPairs(sellerInfo);
+            for (var parts : sellerInfoPairs) {
                 this.users.add(new LoginData(
                         parts[0],
                         parts[1],
@@ -59,14 +53,24 @@ public class Login {
                 ));
             }
         } catch (Exception e) {
-
+            System.out.println("Error reading user login info");
+            System.out.println(e.getMessage());
         }
     }
 
-    public Login GetInstance() {
+    public static Login GetInstance() {
         if (instance == null) {
             instance = new Login();
         }
         return instance;
+    }
+
+    public LoginData userLogin(String userName, String password) throws Exception{
+        for (var userData : this.users) {
+            if (userData.name == userName && userData.password == password) {
+                return userData;
+            }
+        }
+        throw new Exception("User not found.");
     }
 }

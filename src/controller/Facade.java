@@ -9,12 +9,13 @@ import util.ProductIterator;
 import util.Utils;
 
 import java.io.BufferedReader;
+import java.util.Scanner;
 
 public class Facade {
     /**
      * The type of the user: Buyer: 0, Seller: 1
      */
-    private int UserType;
+    private Login.UserType UserType;
 
     /**
      * The object that holds the currently selected product.
@@ -42,10 +43,18 @@ public class Facade {
      */
     public boolean login() {
         try {
-
-
+            Scanner io = new Scanner(System.in);
+            System.out.println("Username: ");
+            String userName = io.nextLine();
+            System.out.println("Password: ");
+            String password = io.nextLine();
+            var loginData = Login.GetInstance().userLogin(userName, password);
+            this.thePerson = loginData.person;
+            this.UserType = loginData.userType;
             return true;
         } catch (Exception e) {
+            System.out.println("Error in login");
+            System.out.println(e.getMessage());
             return false;
         }
     }
