@@ -1,6 +1,6 @@
 package controller;
 
-import Input.Input;
+import util.Files;
 import models.ClassProductList;
 import models.Person;
 import models.Product;
@@ -8,7 +8,6 @@ import models.UserInformation;
 import util.ProductIterator;
 import util.Utils;
 
-import java.io.BufferedReader;
 import java.util.Scanner;
 
 public class Facade {
@@ -100,14 +99,26 @@ public class Facade {
      * Creates a user Object
      * @param userInfoItem info about user to create.
      */
-    public void createUser(UserInformation userInfoItem) {}
+    public void createUser(UserInformation userInfoItem) {
+        try {
+            Login.GetInstance().addNewUser(
+                    userInfoItem.userName,
+                    userInfoItem.password,
+                    userInfoItem.userType,
+                    true
+            );
+        } catch (Exception e) {
+            System.out.println("Error creating user");
+            System.out.println(e.getMessage());
+        }
+    }
 
     /**
      * Creates the product list of the entire system.
      */
     public void createProductList() {
         theProductList = new ClassProductList();
-        String productInfo = Input.GetProductInfo();
+        String productInfo = Files.GetProductInfo();
 
         try {
             var productInfoPairs = Utils.GetPairs(productInfo);
@@ -126,7 +137,7 @@ public class Facade {
      * attached to a user.
      */
     public void attachProductToUser() {
-        String userProductInfo = Input.GetUserProductInfo();
+        String userProductInfo = Files.GetUserProductInfo();
         try {
             assert thePerson != null : "Person not known";
             var userProductInfoPairs = Utils.GetPairs(userProductInfo);

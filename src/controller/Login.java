@@ -1,13 +1,11 @@
 package controller;
 
-import Input.Input;
-import models.Buyer;
+import util.Files;
 import models.Person;
 import models.Seller;
 import util.Utils;
 
-import java.io.BufferedReader;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Login {
     public static enum UserType {
@@ -27,34 +25,52 @@ public class Login {
         }
     }
     private static Login instance = null;
-    private ArrayList<LoginData> users;
+    private HashMap<String, LoginData> users;
 
     private Login() {
-        this.users = new ArrayList<>();
-        String buyerInfo = Input.GetBuyerInfo();
-        String sellerInfo = Input.GetSellerInfo();
+        this.users = new HashMap<>();
+        String buyerInfo = Files.GetBuyerInfo();
+        String sellerInfo = Files.GetSellerInfo();
         try {
             var buyerInfoPairs = Utils.GetPairs(buyerInfo);
             for (var parts : buyerInfoPairs) {
-                this.users.add(new LoginData(
-                        parts[0],
-                        parts[1],
-                        new Buyer(parts[0]),
-                        UserType.Buyer
-                ));
+                this.addNewUser(parts[0], parts[1], UserType.Buyer, false);
             }
             var sellerInfoPairs = Utils.GetPairs(sellerInfo);
             for (var parts : sellerInfoPairs) {
-                this.users.add(new LoginData(
-                        parts[0],
-                        parts[1],
-                        new Seller(parts[0]),
-                        UserType.Seller
-                ));
+                this.addNewUser(parts[0], parts[1], UserType.Seller, false);
             }
         } catch (Exception e) {
             System.out.println("Error reading user login info");
             System.out.println(e.getMessage());
+        }
+    }
+
+    public void addNewUser(String userName, String password, UserType type, Boolean updateFile) throws Exception {
+        assert this.users.containsKey(userName) == false : String.format("User %s already exists", userName);
+        this.users.put(
+                userName,
+                new LoginData(
+                        userName,
+                        password,
+                        new Seller(userName),
+                        type
+                )
+        );
+
+        if (updateFile) {
+            String fileName;
+            switch (type) {
+                case Buyer:
+                    fileName = "BuyerInfo.txt";
+                    break;
+                case Seller:
+                    fileName = "SellerInfo.txt";
+                    break;
+                default:
+                    throw new Exception("Invalid user type");
+            }
+            Files.WriteLineToFile(fileName, String.format("%s:%s", userName, password));
         }
     }
 
@@ -66,11 +82,9 @@ public class Login {
     }
 
     public LoginData userLogin(String userName, String password) throws Exception{
-        for (var userData : this.users) {
-            if (userData.name == userName && userData.password == password) {
-                return userData;
-            }
-        }
-        throw new Exception("User not found.");
+        assert this.users.containsKey(userName) : "User not found";
+        var userData = this.users.get(userName);
+        assert userData.password == password : "Invalid password.";
+        return userData;
     }
 }

@@ -1,5 +1,8 @@
+import controller.Facade;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Facade appFacade = new Facade();
+
     }
 }
