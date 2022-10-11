@@ -1,8 +1,14 @@
 package controller;
 
+import Input.Input;
 import models.ClassProductList;
 import models.Product;
 import models.UserInformation;
+import util.ProductIterator;
+import util.Utils;
+
+import java.io.BufferedReader;
+import java.io.StringReader;
 
 public class Facade {
     /**
@@ -84,13 +90,60 @@ public class Facade {
     /**
      * Creates the product list of the entire system.
      */
-    public void createProductList() {}
+    public void createProductList() {
+        theProductList = new ClassProductList();
+        String productInfo = Input.GetProductInfo();
+
+        try {
+            assert thePerson != null : "Person not known";
+
+            BufferedReader bufReader = Utils.GetBufferedReader(productInfo);
+            String line = null;
+
+            while ( (line=bufReader.readLine()) != null) {
+                String[] parts = line.split(":");
+                assert parts.length == 2 : "Invalid product entry";
+                if (thePerson.getName() == parts[0]) {
+                    ProductIterator it = new ProductIterator(theProductList);
+                    Product associatedProduct = null;
+                    while (it.hasNext()) {
+                        Product next = it.Next();
+                        if (next.getName() == parts[1]) {
+                            associatedProduct = next;
+                            break;
+                        }
+                    }
+                    assert associatedProduct != null : "No matching product found";
+                    thePerson.addAssociatedProduct(associatedProduct);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in reading product list.");
+            System.out.println(e.getMessage());
+        }
+    }
 
     /**
      * Reads the UserProduct.txt file to create a productList
      * attached to a user.
      */
-    public void attachProductToUser() {}
+    public void attachProductToUser() {
+        String userProductInfo = Input.GetUserProductInfo();
+        try {
+            BufferedReader bufReader = Utils.GetBufferedReader(userProductInfo);
+            String line = null;
+
+            while ( (line=bufReader.readLine()) != null) {
+                String[] parts = line.split(":");
+                assert parts.length == 2 : "Invalid product entry";
+                Product newProduct = new Product(parts[1], parts[0]);
+                theProductList.add(newProduct);
+            }
+        } catch (Exception e) {
+            System.out.println("Error in reading user product list.");
+            System.out.println(e.getMessage());
+        }
+    }
 
     /**
      * Displays product list in a dialog.
