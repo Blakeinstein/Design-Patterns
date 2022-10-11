@@ -1,7 +1,5 @@
 package Input;
 
-import controller.Seller;
-
 import java.io.InputStream;
 import java.util.Scanner;
 

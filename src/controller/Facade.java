@@ -2,13 +2,13 @@ package controller;
 
 import Input.Input;
 import models.ClassProductList;
+import models.Person;
 import models.Product;
 import models.UserInformation;
 import util.ProductIterator;
 import util.Utils;
 
 import java.io.BufferedReader;
-import java.io.StringReader;
 
 public class Facade {
     /**
@@ -41,7 +41,13 @@ public class Facade {
      * @return the login result.
      */
     public boolean login() {
-        return false;
+        try {
+
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
@@ -95,27 +101,10 @@ public class Facade {
         String productInfo = Input.GetProductInfo();
 
         try {
-            assert thePerson != null : "Person not known";
-
-            BufferedReader bufReader = Utils.GetBufferedReader(productInfo);
-            String line = null;
-
-            while ( (line=bufReader.readLine()) != null) {
-                String[] parts = line.split(":");
-                assert parts.length == 2 : "Invalid product entry";
-                if (thePerson.getName() == parts[0]) {
-                    ProductIterator it = new ProductIterator(theProductList);
-                    Product associatedProduct = null;
-                    while (it.hasNext()) {
-                        Product next = it.Next();
-                        if (next.getName() == parts[1]) {
-                            associatedProduct = next;
-                            break;
-                        }
-                    }
-                    assert associatedProduct != null : "No matching product found";
-                    thePerson.addAssociatedProduct(associatedProduct);
-                }
+            var productInfoPairs = Utils.GetPairs(productInfo);
+            for (var parts : productInfoPairs) {
+                Product newProduct = new Product(parts[1], parts[0]);
+                theProductList.add(newProduct);
             }
         } catch (Exception e) {
             System.out.println("Error in reading product list.");
@@ -130,15 +119,25 @@ public class Facade {
     public void attachProductToUser() {
         String userProductInfo = Input.GetUserProductInfo();
         try {
-            BufferedReader bufReader = Utils.GetBufferedReader(userProductInfo);
-            String line = null;
+            assert thePerson != null : "Person not known";
+            var userProductInfoPairs = Utils.GetPairs(userProductInfo);
 
-            while ( (line=bufReader.readLine()) != null) {
-                String[] parts = line.split(":");
-                assert parts.length == 2 : "Invalid product entry";
-                Product newProduct = new Product(parts[1], parts[0]);
-                theProductList.add(newProduct);
+            for (var parts : userProductInfoPairs) {
+                if (thePerson.getName() == parts[0]) {
+                    ProductIterator it = new ProductIterator(theProductList);
+                    Product associatedProduct = null;
+                    while (it.hasNext()) {
+                        Product next = it.Next();
+                        if (next.getName() == parts[1]) {
+                            associatedProduct = next;
+                            break;
+                        }
+                    }
+                    assert associatedProduct != null : "No matching product found";
+                    thePerson.addAssociatedProduct(associatedProduct);
+                }
             }
+
         } catch (Exception e) {
             System.out.println("Error in reading user product list.");
             System.out.println(e.getMessage());
