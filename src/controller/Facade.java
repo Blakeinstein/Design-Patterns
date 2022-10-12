@@ -50,6 +50,7 @@ public class Facade {
             var loginData = Login.GetInstance().userLogin(userName, password);
             this.thePerson = loginData.person;
             this.UserType = loginData.userType;
+            this.attachProductToUser();
             return true;
         } catch (Exception e) {
             System.out.println("Error in login");
@@ -166,7 +167,6 @@ public class Facade {
 
     /**
      * Displays product list in a dialog.
-     * @return selected Product
      */
     public void selectProduct() {}
 
