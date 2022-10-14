@@ -72,7 +72,7 @@ public class LoginMenu extends JDialog {
             );
             dispose();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(AppView.Get().getFrame(), e.getMessage());
+            JOptionPane.showMessageDialog(AppView.Get().getFrame(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -82,7 +82,7 @@ public class LoginMenu extends JDialog {
             this.formActions.onCancel();
             dispose();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(AppView.Get().getFrame(), e.getMessage());
+            JOptionPane.showMessageDialog(AppView.Get().getFrame(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

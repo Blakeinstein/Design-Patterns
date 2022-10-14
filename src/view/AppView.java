@@ -1,6 +1,10 @@
 package view;
 
 import controller.Facade;
+import controller.Login;
+import models.Seller;
+import models.UserInformation;
+import util.Files;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -30,14 +34,13 @@ public class AppView {
         this.frame.pack();
         this.frame.setVisible(true);
         loginButton.addActionListener(new ActionListener() {
-            /**
-             * Invoked when an action occurs.
-             *
-             * @param e the event to be processed
-             */
-            @Override
             public void actionPerformed(ActionEvent e) {
                 AppView.this.changeLoginState();
+            }
+        });
+        createNewUserButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                AppView.this.createNewUserFlow();
             }
         });
     }
@@ -51,6 +54,30 @@ public class AppView {
 
     public JFrame getFrame() {
         return this.frame;
+    }
+
+    public void createNewUserFlow() {
+        LoginMenu dialog = new LoginMenu(
+                true,
+                new LoginMenu.LoginFormActions() {
+                    public void onOk(String userName, String password, Login.UserType userType, boolean isRegister) throws Exception{
+                        if (Login.GetInstance().hasUser(userName))
+                            throw new Exception(String.format("User %s already exists", userName));
+                        AppView.this.facade.createUser(
+                                new UserInformation(userName, password, userType)
+                        );
+                        JOptionPane.showMessageDialog(
+                                AppView.this.frame,
+                                String.format("%s: %s created successfully", userType, userName),
+                                "Success",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+                    }
+                }
+        );
+
+        dialog.pack();
+        dialog.setVisible(true);
     }
 
     public void changeLoginState() {
