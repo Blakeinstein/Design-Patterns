@@ -24,8 +24,12 @@ public class Files {
             // close reader
             br.close();
 
+            var s = sb.toString();
+
+            WriteToFile(file, s); // fix trailing new line
+
             // pipe out final string
-            return sb.toString();
+            return s;
         } catch (Exception e) {
             System.out.println("Error reading file " + file);
             System.out.println(e.getMessage());
@@ -68,6 +72,12 @@ public class Files {
     public static void WriteToFile(String fileName, String contents) throws IOException {
         var br = new BufferedWriter(new FileWriter("Data/" + fileName, false));
         br.write(contents);
+        br.close();
+    }
+
+    public static void WriteLineToFile(String fileName, String line) throws IOException {
+        var br = new BufferedWriter(new FileWriter("Data/" + fileName, true));
+        br.append(line).append("\n");
         br.close();
     }
 }

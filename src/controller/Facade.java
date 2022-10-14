@@ -69,8 +69,32 @@ public class Facade {
      * type of user.
      */
     public void addTrading() {
-        var type = this.UserType;
-        var dialog = new TradingMenu(type);
+        var availableList = new ClassProductList();
+        var userList = this.thePerson.getAssociatedProducts();
+        var it = new ProductIterator(this.theProductList);
+        while (it.hasNext()) {
+            var next = it.Next();
+            if (!userList.contains(next)) {
+                availableList.add(next);
+            }
+        }
+        if (availableList.size() == 0) {
+            JOptionPane.showMessageDialog(AppView.Get().getFrame(), "No more products to associate");
+            return;
+        }
+        var dialog = new TradingMenu(
+                this.UserType,
+                availableList,
+                new TradingMenu.TradingMenuActions() {
+                    public void onOk(Product selectedProduct) throws Exception {
+                        Facade.this.thePerson.addAssociatedProduct(selectedProduct);
+                        Files.WriteLineToFile(
+                                "UserProduct.txt",
+                                String.format("%s:%s", Facade.this.thePerson.getName(), selectedProduct.getName())
+                        );
+                    }
+                }
+        );
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
