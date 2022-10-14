@@ -10,7 +10,7 @@ public class Files {
      */
     private static String ReadText(String file)  {
         try {// Get a string stream of the specified file.
-            BufferedReader br = new BufferedReader(new FileReader("./Data/" + file));
+            BufferedReader br = new BufferedReader(new FileReader("Data/" + file));
 
 
             // Get a string builder.
@@ -66,7 +66,7 @@ public class Files {
     }
 
     public static void WriteLineToFile(String fileName, String newLine) throws IOException {
-        var br = new BufferedWriter(new FileWriter("./Data/" + fileName, true));
+        var br = new BufferedWriter(new FileWriter("Data/" + fileName, true));
         br.append(newLine).append("\n");
         br.close();
     }
