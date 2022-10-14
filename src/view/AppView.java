@@ -2,9 +2,9 @@ package view;
 
 import controller.Facade;
 import controller.Login;
-import models.Seller;
+import models.ClassProductList;
 import models.UserInformation;
-import util.Files;
+import util.ProductIterator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -17,6 +17,9 @@ public class AppView {
     private JPanel views;
     private JPanel mainFrame;
     private JTextPane loggedInUserInfo;
+    private JButton refresh;
+    private JList<String> productView;
+    private JPanel productsContainer;
 
     private static AppView appInstance;
 
@@ -89,5 +92,16 @@ public class AppView {
             this.loggedInUserInfo.setText(String.format("Logged in as %s", this.facade.getLoggedInUserName()));
         }
         this.loggedInUserInfo.setVisible(this.isUserLoggedIn);
+        this.productsContainer.setVisible(this.isUserLoggedIn);
+    }
+
+    public void SetProductList(ClassProductList associatedProducts) {
+        ProductIterator it = new ProductIterator(associatedProducts);
+        var newModel = new DefaultListModel<String>();
+        while (it.hasNext()) {
+            var prod = it.Next();
+            newModel.addElement(prod.getName());
+        }
+        this.productView.setModel(newModel);
     }
 }

@@ -21,7 +21,9 @@ public abstract class Person {
     private ProductMenu theProductMenu;
 
     public Person(String userName) {
+
         name = userName;
+        this.associatedProducts = new ClassProductList();
     }
 
     /**
@@ -37,7 +39,7 @@ public abstract class Person {
      * @param product product to associate.
      */
     public void addAssociatedProduct(Product product) {
-        associatedProducts.add(product);
+        this.associatedProducts.add(product);
     }
 
     /**
@@ -66,4 +68,12 @@ public abstract class Person {
     public void showLabels() {}
 
     public abstract ProductMenu CreateProductMenu();
+
+    public ClassProductList getAssociatedProducts() {
+        return this.associatedProducts;
+    }
+
+    public void resetAssociatedProducts() {
+        this.associatedProducts.clear();
+    }
 }

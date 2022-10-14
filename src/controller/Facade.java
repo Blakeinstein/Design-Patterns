@@ -7,8 +7,10 @@ import models.Product;
 import models.UserInformation;
 import util.ProductIterator;
 import util.Utils;
+import view.AppView;
 import view.LoginMenu;
 
+import javax.swing.*;
 import java.util.Scanner;
 
 public class Facade {
@@ -37,6 +39,10 @@ public class Facade {
      */
     private Person thePerson;
 
+    public Facade() {
+        this.createProductList();
+    }
+
     /**
      * Show the login Gui
      * @return the login result.
@@ -47,6 +53,7 @@ public class Facade {
             if (user == null) return false; // the user pressed cancel.
             this.thePerson = user.person;
             this.UserType = user.userType;
+            this.attachProductToUser();
             return true;
         } catch (Exception e) {
             System.out.println("Error in login");
@@ -120,8 +127,7 @@ public class Facade {
         try {
             var productInfoPairs = Utils.GetPairs(productInfo);
             for (var parts : productInfoPairs) {
-                Product newProduct = new Product(parts[1], parts[0]);
-                theProductList.add(newProduct);
+                this.theProductList.add(new Product(parts[1], parts[0]));
             }
         } catch (Exception e) {
             System.out.println("Error in reading product list.");
@@ -136,28 +142,38 @@ public class Facade {
     public void attachProductToUser() {
         String userProductInfo = Files.GetUserProductInfo();
         try {
-            assert thePerson != null : "Person not known";
+            if (this.thePerson == null) throw new Exception("Person not known");
+            this.thePerson.resetAssociatedProducts();
             var userProductInfoPairs = Utils.GetPairs(userProductInfo);
+            var name = this.getLoggedInUserName();
 
             for (var parts : userProductInfoPairs) {
-                if (thePerson.getName() == parts[0]) {
+                if (name.equals(parts[0])) {
                     ProductIterator it = new ProductIterator(theProductList);
                     Product associatedProduct = null;
                     while (it.hasNext()) {
                         Product next = it.Next();
-                        if (next.getName() == parts[1]) {
+                        if (next.getName().equals(parts[1])) {
                             associatedProduct = next;
                             break;
                         }
                     }
-                    assert associatedProduct != null : "No matching product found";
+                    if (associatedProduct == null)
+                        throw new Exception(
+                                String.format("No matching product found with name %s in available product list.", parts[1])
+                        );
                     thePerson.addAssociatedProduct(associatedProduct);
                 }
             }
+            AppView.Get().SetProductList(this.thePerson.getAssociatedProducts());
 
         } catch (Exception e) {
-            System.out.println("Error in reading user product list.");
-            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    e.getMessage(),
+                    "Error in reading user product list.",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 

@@ -65,7 +65,7 @@ public class LoginMenu extends JDialog {
         // add your code here
         try {
             if (this.userNameField.getText().isEmpty()) throw new Exception("Please fill in username");
-            if (this.passwordField.getPassword().length > 0) throw new Exception("Please fill in password");
+            if (this.passwordField.getPassword().length == 0) throw new Exception("Please fill in password");
 
             this.formActions.onOk(
                     this.userNameField.getText(),

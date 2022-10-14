@@ -20,7 +20,7 @@ public class ProductIterator implements ListIterator<ClassProductList, Product> 
      */
     @Override
     public boolean hasNext() {
-        return false;
+        return this.idx < this.iterable.size();
     }
 
     /**
@@ -29,7 +29,7 @@ public class ProductIterator implements ListIterator<ClassProductList, Product> 
      */
     @Override
     public Product Next() {
-        return null;
+        return this.iterable.get(this.idx++);
     }
 
     /**
