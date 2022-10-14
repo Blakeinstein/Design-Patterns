@@ -44,6 +44,7 @@ public class Facade {
     public boolean login() {
         try {
             var user = Login.GetInstance().userLogin();
+            if (user == null) return false; // the user pressed cancel.
             this.thePerson = user.person;
             this.UserType = user.userType;
             return true;
