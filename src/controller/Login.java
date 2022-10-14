@@ -82,9 +82,12 @@ public class Login {
     }
 
     public LoginData userLogin(String userName, String password) throws Exception{
-        assert this.users.containsKey(userName) : "User not found";
+        if (!this.users.containsKey(userName))
+            throw new Exception("User not found");
         var userData = this.users.get(userName);
-        assert userData.password == password : "Invalid password.";
+
+        if (!userData.password.equals(password))
+            throw new Exception("Invalid password.");
         return userData;
     }
 }

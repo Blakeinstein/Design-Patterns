@@ -175,4 +175,14 @@ public class Facade {
      * @call CreateProductMenu
      */
     public void productOperation() {}
+
+    public boolean logout() {
+        this.UserType = null;
+        this.thePerson = null;
+        return false;
+    }
+
+    public String getLoggedInUserName() {
+      return this.thePerson.getName();
+    }
 }

@@ -1,8 +1,8 @@
 import controller.Facade;
+import view.AppView;
 
 public class Main {
     public static void main(String[] args) {
-        Facade appFacade = new Facade();
-
+        AppView app = AppView.Get();
     }
 }
