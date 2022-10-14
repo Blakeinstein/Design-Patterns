@@ -1,14 +1,11 @@
 package controller;
 
-import models.UserInformation;
 import util.Files;
 import models.Person;
 import models.Seller;
 import util.Utils;
 import view.LoginMenu;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 public class Login {
@@ -53,7 +50,8 @@ public class Login {
     }
 
     public void addNewUser(String userName, String password, UserType type, Boolean updateFile) throws Exception {
-        assert this.users.containsKey(userName) == false : String.format("User %s already exists", userName);
+        if (this.users.containsKey(userName))
+            throw new Exception(String.format("User %s already exists", userName));
         this.users.put(
                 userName,
                 new LoginData(
@@ -76,7 +74,7 @@ public class Login {
                 default:
                     throw new Exception("Invalid user type");
             }
-            Files.WriteLineToFile(fileName, String.format("%s:%s", userName, password));
+            Files.WriteToFile(fileName, Login.this.serializeUsers(type));
         }
     }
 
@@ -107,5 +105,19 @@ public class Login {
         dialog.setVisible(true);
 
         return this.userInfo;
+    }
+
+    public boolean hasUser(String userName) {
+        return this.users.containsKey(userName);
+    }
+
+    public String serializeUsers(UserType type) {
+        StringBuilder sb = new StringBuilder();
+        for (var user : this.users.values()) {
+            if (user.userType == type) {
+                sb.append(String.format("%s:%s", user.name, user.password)).append("\n");
+            }
+        }
+        return sb.toString();
     }
 }

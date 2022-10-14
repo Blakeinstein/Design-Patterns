@@ -24,7 +24,7 @@ public class Files {
             // close reader
             br.close();
 
-            // pipe out final string.
+            // pipe out final string
             return sb.toString();
         } catch (Exception e) {
             System.out.println("Error reading file " + file);
@@ -65,9 +65,9 @@ public class Files {
         return ReadText("UserProduct.txt");
     }
 
-    public static void WriteLineToFile(String fileName, String newLine) throws IOException {
-        var br = new BufferedWriter(new FileWriter("Data/" + fileName, true));
-        br.append(newLine).append("\n");
+    public static void WriteToFile(String fileName, String contents) throws IOException {
+        var br = new BufferedWriter(new FileWriter("Data/" + fileName, false));
+        br.write(contents);
         br.close();
     }
 }
