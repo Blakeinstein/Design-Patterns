@@ -8,6 +8,7 @@ import models.UserInformation;
 import util.ProductIterator;
 import util.Utils;
 import view.AppView;
+import view.TradingMenu;
 
 import javax.swing.*;
 
@@ -15,7 +16,7 @@ public class Facade {
     /**
      * The type of the user: Buyer: 0, Seller: 1
      */
-    private Login.USER_TYPE USER_TYPE;
+    private Login.USER_TYPE UserType;
 
     /**
      * The object that holds the currently selected product.
@@ -50,7 +51,7 @@ public class Facade {
             var user = Login.GetInstance().userLogin();
             if (user == null) return false; // the user pressed cancel.
             this.thePerson = user.person;
-            this.USER_TYPE = user.USERTYPE;
+            this.UserType = user.USERTYPE;
             this.attachProductToUser();
             return true;
         } catch (Exception e) {
@@ -67,7 +68,13 @@ public class Facade {
      * @calls SellerTradingMenu or BuyerTradingMenu based on
      * type of user.
      */
-    public void addTrading() {}
+    public void addTrading() {
+        var type = this.UserType;
+        var dialog = new TradingMenu(type);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
 
     /**
      * Views the trading information.
@@ -200,7 +207,7 @@ public class Facade {
     public void productOperation() {}
 
     public boolean logout() {
-        this.USER_TYPE = null;
+        this.UserType = null;
         this.thePerson = null;
         return false;
     }

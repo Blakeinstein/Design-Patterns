@@ -22,6 +22,8 @@ public class AppView {
     private JButton refresh;
     private JList<String> productView;
     private JPanel productsContainer;
+    private JPanel toolbox;
+    private JButton addTrading;
 
     private static AppView appInstance;
 
@@ -37,6 +39,7 @@ public class AppView {
         this.frame.setContentPane(this.mainFrame);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.pack();
+        this.frame.setResizable(false);
         this.frame.setLocationRelativeTo(null);
         this.frame.setVisible(true);
         loginButton.addActionListener(new ActionListener() {
@@ -67,6 +70,12 @@ public class AppView {
                             JOptionPane.ERROR_MESSAGE
                     );
                 }
+            }
+        });
+
+        addTrading.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                AppView.this.facade.addTrading();
             }
         });
     }
@@ -114,7 +123,7 @@ public class AppView {
             this.loggedInUserInfo.setText(String.format("Logged in as %s", this.facade.getLoggedInUserName()));
         }
         this.loggedInUserInfo.setVisible(this.isUserLoggedIn);
-        this.productsContainer.setVisible(this.isUserLoggedIn);
+        this.toolbox.setVisible(this.isUserLoggedIn);
     }
 
     public void SetProductList(ClassProductList associatedProducts) {

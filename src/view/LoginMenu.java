@@ -26,8 +26,10 @@ public class LoginMenu extends JDialog {
     public LoginMenu(boolean isRegister, LoginFormActions formActions) {
         this.formActions = formActions;
         this.isRegister = isRegister;
+        setTitle(isRegister ? "Create new user" : "Login");
         setContentPane(contentPane);
         setModal(true);
+        setResizable(false);
         getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(new ActionListener() {
