@@ -74,7 +74,7 @@ public class Login {
                 default:
                     throw new Exception("Invalid user type");
             }
-            Files.WriteToFile(fileName, Login.this.serializeUsers(type));
+            Files.WriteLineToFile(fileName, String.format("%s:%s", userName, password));
         }
     }
 
@@ -110,15 +110,5 @@ public class Login {
 
     public boolean hasUser(String userName) {
         return this.users.containsKey(userName);
-    }
-
-    public String serializeUsers(USER_TYPE type) {
-        StringBuilder sb = new StringBuilder();
-        for (var user : this.users.values()) {
-            if (user.USERTYPE == type) {
-                sb.append(String.format("%s:%s", user.name, user.password)).append("\n");
-            }
-        }
-        return sb.toString();
     }
 }

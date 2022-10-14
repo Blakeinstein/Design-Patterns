@@ -1,18 +1,33 @@
 package view;
 
 import controller.Login;
+import models.ClassProductList;
+import models.Product;
+import util.ProductIterator;
 
 import javax.swing.*;
 import java.awt.event.*;
 
 public class TradingMenu extends JDialog {
+    public static class TradingMenuActions {
+        public void onOk(Product selectedProduct) throws Exception{};
+        public void onCancel() throws Exception {};
+    }
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JComboBox selectedProduct;
 
-    public TradingMenu(Login.USER_TYPE userType) {
+    private final TradingMenuActions formActions;
+
+    private final ClassProductList productList;
+
+    public TradingMenu(Login.USER_TYPE userType, ClassProductList productList, TradingMenuActions formActions) {
+        this.formActions = formActions;
+        this.productList = productList;
         setContentPane(contentPane);
         setModal(true);
+        setTitle(String.format("Add %s prod", userType == Login.USER_TYPE.Buyer ? "Buyer" : "Seller"));
         getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(new ActionListener() {
@@ -41,15 +56,38 @@ public class TradingMenu extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        var model = new DefaultComboBoxModel<String>();
+        var it = new ProductIterator(this.productList);
+        while (it.hasNext()) {
+            model.addElement(it.Next().getName());
+        }
+        this.selectedProduct.setModel(model);
     }
 
     private void onOK() {
         // add your code here
-        dispose();
+        try {
+            var idx = this.selectedProduct.getSelectedIndex();
+            if (idx < 0 || idx >= this.productList.size()) {
+                throw new Exception("Select a product");
+            }
+            this.formActions.onOk(
+                    this.productList.get(idx)
+            );
+            dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(getRootPane(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void onCancel() {
         // add your code here if necessary
-        dispose();
+        try {
+            this.formActions.onCancel();
+            dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(getRootPane(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

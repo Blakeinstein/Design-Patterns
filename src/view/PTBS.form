@@ -96,6 +96,7 @@
                       <selectionForeground color="-10526624"/>
                       <selectionMode value="0"/>
                       <toolTipText value="List of associated products"/>
+                      <visible value="false"/>
                     </properties>
                   </component>
                 </children>

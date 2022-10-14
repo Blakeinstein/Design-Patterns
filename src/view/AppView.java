@@ -73,6 +73,12 @@ public class AppView {
             }
         });
 
+        refresh.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                AppView.this.facade.attachProductToUser();
+            }
+        });
+
         addTrading.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 AppView.this.facade.addTrading();
@@ -124,6 +130,7 @@ public class AppView {
         }
         this.loggedInUserInfo.setVisible(this.isUserLoggedIn);
         this.toolbox.setVisible(this.isUserLoggedIn);
+        this.productView.setVisible(this.isUserLoggedIn);
     }
 
     public void SetProductList(ClassProductList associatedProducts) {
