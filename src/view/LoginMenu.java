@@ -64,6 +64,9 @@ public class LoginMenu extends JDialog {
     private void onOK() {
         // add your code here
         try {
+            if (this.userNameField.getText().isEmpty()) throw new Exception("Please fill in username");
+            if (this.passwordField.getPassword().length > 0) throw new Exception("Please fill in password");
+
             this.formActions.onOk(
                     this.userNameField.getText(),
                     String.valueOf(this.passwordField.getPassword()),
@@ -72,7 +75,7 @@ public class LoginMenu extends JDialog {
             );
             dispose();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(AppView.Get().getFrame(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(getRootPane(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -82,7 +85,7 @@ public class LoginMenu extends JDialog {
             this.formActions.onCancel();
             dispose();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(AppView.Get().getFrame(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(getRootPane(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

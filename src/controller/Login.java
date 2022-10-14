@@ -102,6 +102,7 @@ public class Login {
                 }
         );
         dialog.pack();
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
 
         return this.userInfo;

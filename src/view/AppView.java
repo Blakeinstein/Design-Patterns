@@ -32,6 +32,7 @@ public class AppView {
         this.frame.setContentPane(this.mainFrame);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.pack();
+        this.frame.setLocationRelativeTo(null);
         this.frame.setVisible(true);
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -75,8 +76,8 @@ public class AppView {
                     }
                 }
         );
-
         dialog.pack();
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
 

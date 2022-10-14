@@ -51,7 +51,9 @@
       </grid>
       <grid id="e3588" layout-manager="GridBagLayout">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="400" height="300"/>
+          </grid>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -62,6 +64,7 @@
               <gridbag weightx="1.0" weighty="1.0"/>
             </constraints>
             <properties>
+              <maximumSize width="50" height="16"/>
               <text value="Username"/>
             </properties>
           </component>
@@ -71,12 +74,13 @@
               <gridbag weightx="1.0" weighty="1.0"/>
             </constraints>
             <properties>
+              <maximumSize width="50" height="16"/>
               <text value="Password"/>
             </properties>
           </component>
           <component id="62f6" class="javax.swing.JPasswordField" binding="passwordField">
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
               <gridbag weightx="1.0" weighty="1.0"/>
@@ -94,10 +98,11 @@
           </component>
           <component id="91359" class="javax.swing.JLabel" binding="accountTypeLabel">
             <constraints>
-              <grid row="2" column="0" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="0" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag weightx="1.0" weighty="1.0"/>
             </constraints>
             <properties>
+              <maximumSize width="50" height="16"/>
               <text value="Account Type"/>
               <visible value="false"/>
             </properties>
@@ -118,6 +123,7 @@
                   <alignmentX value="0.0"/>
                   <borderPainted value="false"/>
                   <margin top="1" left="1" bottom="0" right="1"/>
+                  <selected value="true"/>
                   <text value="Buyer"/>
                 </properties>
               </component>
