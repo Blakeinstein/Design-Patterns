@@ -9,20 +9,20 @@ import view.LoginMenu;
 import java.util.HashMap;
 
 public class Login {
-    public static enum UserType {
+    public static enum USER_TYPE {
         Buyer, Seller
     }
     public class LoginData {
         public String name;
         public String password;
         public Person person;
-        public UserType userType;
+        public USER_TYPE USERTYPE;
 
-        public LoginData(String name, String password, Person person, UserType userType) {
+        public LoginData(String name, String password, Person person, USER_TYPE USERTYPE) {
             this.name = name;
             this.password = password;
             this.person = person;
-            this.userType = userType;
+            this.USERTYPE = USERTYPE;
         }
     }
     private static Login instance = null;
@@ -37,11 +37,11 @@ public class Login {
         try {
             var buyerInfoPairs = Utils.GetPairs(buyerInfo);
             for (var parts : buyerInfoPairs) {
-                this.addNewUser(parts[0], parts[1], UserType.Buyer, false);
+                this.addNewUser(parts[0], parts[1], USER_TYPE.Buyer, false);
             }
             var sellerInfoPairs = Utils.GetPairs(sellerInfo);
             for (var parts : sellerInfoPairs) {
-                this.addNewUser(parts[0], parts[1], UserType.Seller, false);
+                this.addNewUser(parts[0], parts[1], USER_TYPE.Seller, false);
             }
         } catch (Exception e) {
             System.out.println("Error reading user login info");
@@ -49,7 +49,7 @@ public class Login {
         }
     }
 
-    public void addNewUser(String userName, String password, UserType type, Boolean updateFile) throws Exception {
+    public void addNewUser(String userName, String password, USER_TYPE type, Boolean updateFile) throws Exception {
         if (this.users.containsKey(userName))
             throw new Exception(String.format("User %s already exists", userName));
         this.users.put(
@@ -89,7 +89,7 @@ public class Login {
         LoginMenu dialog = new LoginMenu(
                 false,
                 new LoginMenu.LoginFormActions() {
-                    public void onOk(String userName, String password, Login.UserType userType, boolean isRegister) throws Exception{
+                    public void onOk(String userName, String password, USER_TYPE userType, boolean isRegister) throws Exception{
                         if (!Login.this.users.containsKey(userName))
                             throw new Exception("User not found");
                         var userData = Login.this.users.get(userName);
@@ -112,10 +112,10 @@ public class Login {
         return this.users.containsKey(userName);
     }
 
-    public String serializeUsers(UserType type) {
+    public String serializeUsers(USER_TYPE type) {
         StringBuilder sb = new StringBuilder();
         for (var user : this.users.values()) {
-            if (user.userType == type) {
+            if (user.USERTYPE == type) {
                 sb.append(String.format("%s:%s", user.name, user.password)).append("\n");
             }
         }

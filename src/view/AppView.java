@@ -7,6 +7,8 @@ import models.UserInformation;
 import util.ProductIterator;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -42,9 +44,29 @@ public class AppView {
                 AppView.this.changeLoginState();
             }
         });
+
         createNewUserButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 AppView.this.createNewUserFlow();
+            }
+        });
+
+        productView.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                try {
+                    if (!e.getValueIsAdjusting()) {
+                        AppView.this.facade.selectProduct(
+                                AppView.this.productView.getSelectedValue().toString()
+                        );
+                    }
+                } catch (Exception ee) {
+                    JOptionPane.showMessageDialog(
+                            AppView.this.frame,
+                            ee.getMessage(),
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
             }
         });
     }
@@ -64,7 +86,7 @@ public class AppView {
         LoginMenu dialog = new LoginMenu(
                 true,
                 new LoginMenu.LoginFormActions() {
-                    public void onOk(String userName, String password, Login.UserType userType, boolean isRegister) throws Exception{
+                    public void onOk(String userName, String password, Login.USER_TYPE userType, boolean isRegister) throws Exception{
                         if (Login.GetInstance().hasUser(userName))
                             throw new Exception(String.format("User %s already exists", userName));
                         AppView.this.facade.createUser(

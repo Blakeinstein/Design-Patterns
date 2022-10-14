@@ -8,16 +8,14 @@ import models.UserInformation;
 import util.ProductIterator;
 import util.Utils;
 import view.AppView;
-import view.LoginMenu;
 
 import javax.swing.*;
-import java.util.Scanner;
 
 public class Facade {
     /**
      * The type of the user: Buyer: 0, Seller: 1
      */
-    private Login.UserType UserType;
+    private Login.USER_TYPE USER_TYPE;
 
     /**
      * The object that holds the currently selected product.
@@ -27,7 +25,7 @@ public class Facade {
     /**
      * The selected product category: Meat: 0, Produce: 1.
      */
-    private int nProductCategory;
+    private Product.PRODUCT_TYPE nProductCategory;
 
     /**
      * The list of products of the entire system
@@ -52,7 +50,7 @@ public class Facade {
             var user = Login.GetInstance().userLogin();
             if (user == null) return false; // the user pressed cancel.
             this.thePerson = user.person;
-            this.UserType = user.userType;
+            this.USER_TYPE = user.USERTYPE;
             this.attachProductToUser();
             return true;
         } catch (Exception e) {
@@ -108,7 +106,7 @@ public class Facade {
             Login.GetInstance().addNewUser(
                     userInfoItem.userName,
                     userInfoItem.password,
-                    userInfoItem.userType,
+                    userInfoItem.USERTYPE,
                     true
             );
         } catch (Exception e) {
@@ -180,7 +178,20 @@ public class Facade {
     /**
      * Displays product list in a dialog.
      */
-    public void selectProduct() {}
+    public void selectProduct(String productName) throws Exception{
+        ProductIterator it = new ProductIterator(
+                this.thePerson.getAssociatedProducts()
+        );
+        while(it.hasNext()) {
+            var next = it.Next();
+            if (next.getName().equals(productName)) {
+                this.theSelectProduct = next;
+                this.nProductCategory = next.getType();
+                return;
+            }
+        }
+        throw new Exception("Invalid product selected");
+    }
 
     /**
      * calls a menu creator as per usertype.
@@ -189,7 +200,7 @@ public class Facade {
     public void productOperation() {}
 
     public boolean logout() {
-        this.UserType = null;
+        this.USER_TYPE = null;
         this.thePerson = null;
         return false;
     }

@@ -7,7 +7,7 @@ import java.awt.event.*;
 
 public class LoginMenu extends JDialog {
     public static class LoginFormActions {
-        public void onOk(String userName, String password, Login.UserType userType, boolean isRegister) throws Exception{};
+        public void onOk(String userName, String password, Login.USER_TYPE USERTYPE, boolean isRegister) throws Exception{};
         public void onCancel() throws Exception {};
     }
     private final LoginFormActions formActions;
@@ -70,7 +70,7 @@ public class LoginMenu extends JDialog {
             this.formActions.onOk(
                     this.userNameField.getText(),
                     String.valueOf(this.passwordField.getPassword()),
-                    this.isBuyer.isSelected() ? Login.UserType.Buyer : Login.UserType.Seller,
+                    this.isBuyer.isSelected() ? Login.USER_TYPE.Buyer : Login.USER_TYPE.Seller,
                     this.isRegister
             );
             dispose();
