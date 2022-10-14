@@ -1,10 +1,14 @@
 package controller;
 
+import models.UserInformation;
 import util.Files;
 import models.Person;
 import models.Seller;
 import util.Utils;
+import view.LoginMenu;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 public class Login {
@@ -26,6 +30,8 @@ public class Login {
     }
     private static Login instance = null;
     private HashMap<String, LoginData> users;
+
+    public LoginData userInfo = null;
 
     private Login() {
         this.users = new HashMap<>();
@@ -81,13 +87,25 @@ public class Login {
         return instance;
     }
 
-    public LoginData userLogin(String userName, String password) throws Exception{
-        if (!this.users.containsKey(userName))
-            throw new Exception("User not found");
-        var userData = this.users.get(userName);
+    public LoginData userLogin() throws Exception{
+        LoginMenu dialog = new LoginMenu(
+                false,
+                new LoginMenu.LoginFormActions() {
+                    public void onOk(String userName, String password, Login.UserType userType, boolean isRegister) throws Exception{
+                        if (!Login.this.users.containsKey(userName))
+                            throw new Exception("User not found");
+                        var userData = Login.this.users.get(userName);
 
-        if (!userData.password.equals(password))
-            throw new Exception("Invalid password.");
-        return userData;
+                        if (!userData.password.equals(password))
+                            throw new Exception("Invalid password.");
+
+                        Login.this.userInfo = userData;
+                    }
+                }
+        );
+        dialog.pack();
+        dialog.setVisible(true);
+
+        return this.userInfo;
     }
 }

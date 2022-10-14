@@ -7,6 +7,7 @@ import models.Product;
 import models.UserInformation;
 import util.ProductIterator;
 import util.Utils;
+import view.LoginMenu;
 
 import java.util.Scanner;
 
@@ -42,15 +43,9 @@ public class Facade {
      */
     public boolean login() {
         try {
-            Scanner io = new Scanner(System.in);
-            System.out.println("Username: ");
-            String userName = io.nextLine();
-            System.out.println("Password: ");
-            String password = io.nextLine();
-            var loginData = Login.GetInstance().userLogin(userName, password);
-            this.thePerson = loginData.person;
-            this.UserType = loginData.userType;
-            this.attachProductToUser();
+            var user = Login.GetInstance().userLogin();
+            this.thePerson = user.person;
+            this.UserType = user.userType;
             return true;
         } catch (Exception e) {
             System.out.println("Error in login");
