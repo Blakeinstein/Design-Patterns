@@ -17,7 +17,7 @@ public abstract class Person {
     /**
      * Points to a concrete ProductMenu object.
      */
-    private ProductMenu theProductMenu;
+    public ProductMenu theProductMenu;
 
     public Person(String userName) {
         name = userName;

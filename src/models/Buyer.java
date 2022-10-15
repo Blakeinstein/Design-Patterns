@@ -14,10 +14,11 @@ public class Buyer extends Person{
      * of the buyer.
      */
     public void showMenu() {
-
+        this.theProductMenu.showMenu();
     }
 
     public ProductMenu CreateProductMenu(NewProductMenu.NewProductHandler handler) {
-        return NewProductMenu.CreateProductDialog(handler);
+        this.theProductMenu = NewProductMenu.CreateProductDialog(handler);
+        return this.theProductMenu;
     }
 }

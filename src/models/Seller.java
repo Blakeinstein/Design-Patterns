@@ -13,12 +13,12 @@ public class Seller extends Person{
      * Show appropriate items on the menu as per the need
      * of the buyer.
      */
-    @Override
     public void showMenu() {
-
+        this.theProductMenu.showMenu();
     }
 
     public ProductMenu CreateProductMenu(NewProductMenu.NewProductHandler handler) {
-        return NewProductMenu.CreateProductDialog(handler);
+        this.theProductMenu = NewProductMenu.CreateProductDialog(handler);
+        return this.theProductMenu;
     }
 }

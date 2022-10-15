@@ -1,13 +1,12 @@
 package controller;
 
+import models.*;
 import util.Files;
-import models.ClassProductList;
-import models.Person;
-import models.Product;
-import models.UserInformation;
+import util.OfferingIterator;
 import util.ProductIterator;
 import util.Utils;
 import view.*;
+import view.Reminder;
 
 import javax.swing.*;
 
@@ -32,13 +31,17 @@ public class Facade {
      */
     private ClassProductList theProductList;
 
+    private OfferingList offeringList;
+
     /**
      * The current user
      */
     private Person thePerson;
 
     public Facade() {
+
         this.createProductList();
+        this.offeringList = new OfferingList();
     }
 
     /**
@@ -141,6 +144,9 @@ public class Facade {
                     JOptionPane.ERROR_MESSAGE
             );
         } else {
+            this.offeringList.add(
+                    new Offering(this.theSelectProduct)
+            );
             JOptionPane.showMessageDialog(
                     AppView.Get().getFrame(),
                     String.format("Marked offering for %s", this.theSelectProduct.getName()),
@@ -154,12 +160,27 @@ public class Facade {
      * Used to submit the offering.
      */
     public void submitOffering() {
-        JOptionPane.showMessageDialog(
-                AppView.Get().getFrame(),
-                "All products marked for offering Submitted",
-                "Success",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        var count = 0;
+        var it = new OfferingIterator(this.offeringList);
+        while (it.hasNext()) {
+            var next = it.Next();
+            if (next.submit()) count++;
+        }
+        if (count == 0) {
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    "No products marked as offering",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else {
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    String.format("%d products submitted for offering", count),
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
     }
 
     /**
@@ -299,7 +320,7 @@ public class Facade {
                 }
         );
         if (productMenu != null) {
-            productMenu.showMenu();
+            this.thePerson.showMenu();
         }
     }
 

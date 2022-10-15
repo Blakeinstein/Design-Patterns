@@ -19,33 +19,30 @@ public class OfferingIterator implements ListIterator<OfferingList, Offering> {
      * Check if there is another offering.
      * @return true if there is an offering, false otherwise.
      */
-    @Override
     public boolean hasNext() {
-        return false;
+        return this.idx < this.iterable.size();
     }
 
     /**
      * if hasNext, return the next offering, null otherwise
      * @return the next offering if hasNext, null otherwise.
      */
-    @Override
     public Offering Next() {
-        return null;
+        return this.iterable.get(this.idx++);
     }
 
     /**
      * Move the current offering before the first one.
      */
-    @Override
     public void MoveToHead() {
-
+        var item = this.iterable.remove(this.idx);
+        this.iterable.add(0, item);
     }
 
     /**
      * Remove the current offering.
      */
-    @Override
     public void Remove() {
-
+        this.iterable.remove(this.idx);
     }
 }

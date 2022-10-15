@@ -18,7 +18,6 @@ public class ProductIterator implements ListIterator<ClassProductList, Product> 
      * Check if there is another product.
      * @return true if there is another product, false otherwise.
      */
-    @Override
     public boolean hasNext() {
         return this.idx < this.iterable.size();
     }
@@ -27,7 +26,6 @@ public class ProductIterator implements ListIterator<ClassProductList, Product> 
      * if hasNext, return the next product, null otherwise.
      * @return returns next product, null if hasNext() is false.
      */
-    @Override
     public Product Next() {
         return this.iterable.get(this.idx++);
     }
@@ -35,16 +33,15 @@ public class ProductIterator implements ListIterator<ClassProductList, Product> 
     /**
      * Set the current product to the location before the first product.
      */
-    @Override
     public void MoveToHead() {
-
+        var item = this.iterable.remove(this.idx);
+        this.iterable.add(0, item);
     }
 
     /**
      * Remove the current product from the list.
      */
-    @Override
     public void Remove() {
-
+        this.iterable.remove(this.idx);
     }
 }
