@@ -1,14 +1,12 @@
 package models;
 
-import models.ClassProductList;
-import models.Product;
 import view.ProductMenu;
 
 public abstract class Person {
     /**
      * Name of the person.
      */
-    private String name;
+    private final String name;
 
     /**
      * List of associated products.
@@ -21,7 +19,6 @@ public abstract class Person {
     private ProductMenu theProductMenu;
 
     public Person(String userName) {
-
         name = userName;
         this.associatedProducts = new ClassProductList();
     }

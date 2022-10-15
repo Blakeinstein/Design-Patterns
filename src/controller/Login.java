@@ -1,5 +1,6 @@
 package controller;
 
+import models.Buyer;
 import util.Files;
 import models.Person;
 import models.Seller;
@@ -52,12 +53,21 @@ public class Login {
     public void addNewUser(String userName, String password, USER_TYPE type, Boolean updateFile) throws Exception {
         if (this.users.containsKey(userName))
             throw new Exception(String.format("User %s already exists", userName));
+        Person p;
+        switch (type) {
+            case Buyer:
+                p = new Buyer(userName);
+                break;
+            case Seller:
+            default:
+                p = new Seller(userName);
+        }
         this.users.put(
                 userName,
                 new LoginData(
                         userName,
                         password,
-                        new Seller(userName),
+                        p,
                         type
                 )
         );

@@ -8,6 +8,8 @@ import models.UserInformation;
 import util.ProductIterator;
 import util.Utils;
 import view.AppView;
+import view.MeatProductMenu;
+import view.ProduceProductMenu;
 import view.TradingMenu;
 
 import javax.swing.*;
@@ -65,8 +67,6 @@ public class Facade {
      * Adds a new trade and fills in the required information.
      * It does not update the product menu, the product menu needs to
      * be refreshed separately.
-     * @calls SellerTradingMenu or BuyerTradingMenu based on
-     * type of user.
      */
     public void addTrading() {
         var availableList = new ClassProductList();
@@ -102,25 +102,26 @@ public class Facade {
 
     /**
      * Views the trading information.
-     * @calls SellerTradingMenu or BuyerTradingMenu based on
-     * type of user.
      */
-    public void viewTrading() {}
+    public void viewTrading() {
+        System.out.println(this.theSelectProduct.getName());
+        System.out.println(this.nProductCategory);
+    }
 
     /**
      * View the given offering.
      */
-    public void viewOffering() {};
+    public void viewOffering() {}
 
     /**
      * Set the deal flag of a given offering.
      */
-    public void markOffering() {};
+    public void markOffering() {}
 
     /**
      * Used to submit the offering.
      */
-    public void submitOffering() {};
+    public void submitOffering() {}
 
     /**
      * shows the reminder box to remind buyer of the
@@ -226,9 +227,11 @@ public class Facade {
 
     /**
      * calls a menu creator as per usertype.
-     * @call CreateProductMenu
      */
-    public void productOperation() {}
+    public void productOperation() {
+        var productMenu = this.thePerson.CreateProductMenu();
+        productMenu.showMenu(this.theProductList);
+    }
 
     public boolean logout() {
         this.UserType = null;

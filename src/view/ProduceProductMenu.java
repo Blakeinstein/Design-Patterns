@@ -1,9 +1,22 @@
 package view;
 
-public class ProduceProductMenu implements ProductMenu{
-    @Override
-    public void showMenu() {
+import models.ClassProductList;
+import models.Product;
+import util.ProductIterator;
 
+public class ProduceProductMenu implements ProductMenu {
+
+    private final NewProductMenu dialog;
+
+    public ProduceProductMenu(NewProductMenu dialog) {
+        this.dialog = dialog;
+    }
+
+    /**
+     * @param productList
+     */
+    public void showMenu(ClassProductList productList) {
+        this.dialog.showMenu(productList, Product.PRODUCT_TYPE.Produce);
     }
 
     /**

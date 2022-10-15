@@ -1,8 +1,11 @@
 package view;
 
+import controller.Facade;
+import models.ClassProductList;
+
 public interface ProductMenu {
 
-    public void showMenu();
+    public void showMenu(ClassProductList productList);
 
     /**
      * To show the add buttons.
