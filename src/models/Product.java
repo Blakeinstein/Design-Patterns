@@ -22,6 +22,11 @@ public class Product {
         }
     }
 
+    public Product(String productName, PRODUCT_TYPE productType) {
+       Name = productName;
+       type = productType;
+    }
+
     public String getName() {
         return Name;
     }

@@ -12,10 +12,9 @@ public class MeatProductMenu implements ProductMenu {
     }
 
     /**
-     * @param productList
      */
-    public void showMenu(ClassProductList productList) {
-        this.dialog.showMenu(productList, Product.PRODUCT_TYPE.Meat);
+    public void showMenu() {
+        this.dialog.showMenu(Product.PRODUCT_TYPE.Meat);
     }
 
     /**

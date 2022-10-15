@@ -7,29 +7,23 @@ import models.UserInformation;
 import util.ProductIterator;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AppView {
     private JButton loginButton;
     private JButton createNewUserButton;
-    private JPanel loginActions;
-    private JPanel views;
     private JPanel mainFrame;
     private JTextPane loggedInUserInfo;
     private JButton refresh;
     private JList<String> productView;
-    private JPanel productsContainer;
     private JPanel toolbox;
     private JButton addTrading;
+    private JButton addProduct;
 
     private static AppView appInstance;
 
-    private JFrame frame;
+    private final JFrame frame;
 
-    private Facade facade;
+    private final Facade facade;
 
     private boolean isUserLoggedIn = false;
 
@@ -42,48 +36,31 @@ public class AppView {
         this.frame.setResizable(false);
         this.frame.setLocationRelativeTo(null);
         this.frame.setVisible(true);
-        loginButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                AppView.this.changeLoginState();
-            }
-        });
+        loginButton.addActionListener(e -> AppView.this.changeLoginState());
 
-        createNewUserButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                AppView.this.createNewUserFlow();
-            }
-        });
+        createNewUserButton.addActionListener(e -> AppView.this.createNewUserFlow());
 
-        productView.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                try {
-                    if (!e.getValueIsAdjusting()) {
-                        AppView.this.facade.selectProduct(
-                                AppView.this.productView.getSelectedValue().toString()
-                        );
-                    }
-                } catch (Exception ee) {
-                    JOptionPane.showMessageDialog(
-                            AppView.this.frame,
-                            ee.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE
+        productView.addListSelectionListener(e -> {
+            try {
+                if (!e.getValueIsAdjusting()) {
+                    AppView.this.facade.selectProduct(
+                            AppView.this.productView.getSelectedValue()
                     );
                 }
+            } catch (Exception ee) {
+                JOptionPane.showMessageDialog(
+                        AppView.this.frame,
+                        ee.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
             }
         });
 
-        refresh.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                AppView.this.facade.attachProductToUser();
-            }
-        });
+        refresh.addActionListener(e -> AppView.this.facade.attachProductToUser());
 
-        addTrading.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                AppView.this.facade.addTrading();
-            }
-        });
+        addTrading.addActionListener(e -> AppView.this.facade.addTrading());
+        addProduct.addActionListener(e -> AppView.this.facade.productOperation());
     }
 
     public static AppView Get(){

@@ -7,10 +7,7 @@ import models.Product;
 import models.UserInformation;
 import util.ProductIterator;
 import util.Utils;
-import view.AppView;
-import view.MeatProductMenu;
-import view.ProduceProductMenu;
-import view.TradingMenu;
+import view.*;
 
 import javax.swing.*;
 
@@ -229,8 +226,35 @@ public class Facade {
      * calls a menu creator as per usertype.
      */
     public void productOperation() {
-        var productMenu = this.thePerson.CreateProductMenu();
-        productMenu.showMenu(this.theProductList);
+        var productMenu = this.thePerson.CreateProductMenu(
+                new NewProductMenu.NewProductHandler() {
+                    public void onOk(String productName, Product.PRODUCT_TYPE type, boolean associate) throws Exception {
+                        var it = new ProductIterator(Facade.this.theProductList);
+                        while (it.hasNext()) {
+                            if (it.Next().getName().equals(productName)) {
+                                throw new Exception(String.format("Product with name %s already exists", productName));
+                            }
+                        }
+                        var product = new Product(
+                                productName,
+                                type
+                        );
+                        Facade.this.theProductList.add(product);
+                        Files.WriteLineToFile(
+                                "ProductInfo.txt",
+                                String.format("%s:%s", type == Product.PRODUCT_TYPE.Meat ? "Meat" : "Produce", product.getName())
+                        );
+                        if (associate) {
+                            Facade.this.thePerson.addAssociatedProduct(product);
+                            Files.WriteLineToFile(
+                                    "UserProduct.txt",
+                                    String.format("%s:%s", Facade.this.thePerson.getName(), product.getName())
+                            );
+                        }
+                    }
+                }
+        );
+        productMenu.showMenu();
     }
 
     public boolean logout() {

@@ -1,5 +1,6 @@
 package models;
 
+import view.NewProductMenu;
 import view.ProductMenu;
 
 public class Seller extends Person{
@@ -17,8 +18,7 @@ public class Seller extends Person{
 
     }
 
-    @Override
-    public ProductMenu CreateProductMenu() {
-        return null;
+    public ProductMenu CreateProductMenu(NewProductMenu.NewProductHandler handler) {
+        return NewProductMenu.CreateProductDialog(handler);
     }
 }

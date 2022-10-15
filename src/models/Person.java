@@ -1,5 +1,6 @@
 package models;
 
+import view.NewProductMenu;
 import view.ProductMenu;
 
 public abstract class Person {
@@ -64,7 +65,7 @@ public abstract class Person {
      */
     public void showLabels() {}
 
-    public abstract ProductMenu CreateProductMenu();
+    public abstract ProductMenu CreateProductMenu(NewProductMenu.NewProductHandler handler);
 
     public ClassProductList getAssociatedProducts() {
         return this.associatedProducts;

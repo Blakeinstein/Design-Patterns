@@ -17,7 +17,7 @@ public class Buyer extends Person{
 
     }
 
-    public ProductMenu CreateProductMenu() {
-        return NewProductMenu.ShowCreateProductDialog();
+    public ProductMenu CreateProductMenu(NewProductMenu.NewProductHandler handler) {
+        return NewProductMenu.CreateProductDialog(handler);
     }
 }

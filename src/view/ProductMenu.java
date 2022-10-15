@@ -5,7 +5,7 @@ import models.ClassProductList;
 
 public interface ProductMenu {
 
-    public void showMenu(ClassProductList productList);
+    public void showMenu();
 
     /**
      * To show the add buttons.

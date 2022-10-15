@@ -1,33 +1,33 @@
 package view;
 
-import models.ClassProductList;
 import models.Product;
-import util.ProductIterator;
 
 import javax.swing.*;
 import java.awt.event.*;
 
 public class NewProductMenu extends JDialog {
+    public static class NewProductHandler {
+        public void onOk(String productName, Product.PRODUCT_TYPE type, boolean associate) throws Exception {};
+        public void onCancel() throws Exception {};
+    }
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JCheckBox associate;
+    private JTextField productName;
 
-    public NewProductMenu() {
+    private Product.PRODUCT_TYPE productType;
+
+    private final NewProductHandler handler;
+
+    public NewProductMenu(NewProductHandler handler) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        buttonOK.addActionListener(e -> onOK());
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        buttonCancel.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -38,24 +38,44 @@ public class NewProductMenu extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        this.handler = handler;
     }
 
     private void onOK() {
-        // add your code here
-        dispose();
+        try {
+            if (this.productName.getText().isEmpty()) throw new Exception("Enter a product name");
+            this.handler.onOk(
+                    this.productName.getText(),
+                    this.productType,
+                    this.associate.isSelected()
+            );
+            dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    getRootPane(),
+                    e.getMessage(),
+                    "Error creating product",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
     private void onCancel() {
-        // add your code here if necessary
-        dispose();
+        try {
+            this.handler.onCancel();
+            dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    getRootPane(),
+                    e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
-    public static ProductMenu ShowCreateProductDialog() {
+    public static ProductMenu CreateProductDialog(NewProductHandler handler) {
         Object[] opts = {
                 "Meat",
                 "Produce"
@@ -71,7 +91,7 @@ public class NewProductMenu extends JDialog {
                 opts[0]
         );
 
-        NewProductMenu dialog = new NewProductMenu();
+        NewProductMenu dialog = new NewProductMenu(handler);
         dialog.pack();
 
         switch (selection) {
@@ -83,15 +103,11 @@ public class NewProductMenu extends JDialog {
         }
     }
 
-    public void showMenu(ClassProductList productList, Product.PRODUCT_TYPE productType) {
-        var it = new ProductIterator(productList);
-        var model = new DefaultComboBoxModel<String>();
-        while (it.hasNext()) {
-            var next = it.Next();
-            if (next.getType() == Product.PRODUCT_TYPE.Produce) {
-                model.addElement(next.getName());
-            }
-        }
+    public void showMenu(Product.PRODUCT_TYPE productType) {
+        this.productType = productType;
+        this.setTitle(
+                String.format("New %s product", productType == Product.PRODUCT_TYPE.Meat ? "Meat" : "Produce")
+        );
         this.pack();
         this.setVisible(true);
     }
