@@ -101,30 +101,74 @@ public class Facade {
      * Views the trading information.
      */
     public void viewTrading() {
-        System.out.println(this.theSelectProduct.getName());
-        System.out.println(this.nProductCategory);
+        if (this.theSelectProduct == null) {
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    "No product selected",
+                    "Error viewing offering",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else {
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    String.format(
+                            "Product Name: %s\nProduct Type: %s",
+                            this.theSelectProduct.getName(),
+                            this.nProductCategory == Product.PRODUCT_TYPE.Produce ? "Produce" : "Meat"
+                    ),
+                    String.format("About product: %s", this.theSelectProduct.getName()),
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
     }
 
     /**
      * View the given offering.
      */
-    public void viewOffering() {}
+    public void viewOffering() {
+
+    }
 
     /**
      * Set the deal flag of a given offering.
      */
-    public void markOffering() {}
+    public void markOffering() {
+        if (this.theSelectProduct == null) {
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    "No product selected",
+                    "Error marking offering",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else {
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    String.format("Marked offering for %s", this.theSelectProduct.getName()),
+                    String.format("New offering: %s", this.theSelectProduct.getName()),
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
+    }
 
     /**
      * Used to submit the offering.
      */
-    public void submitOffering() {}
+    public void submitOffering() {
+        JOptionPane.showMessageDialog(
+                AppView.Get().getFrame(),
+                "All products marked for offering Submitted",
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }
 
     /**
      * shows the reminder box to remind buyer of the
      * upcoming overdue trading window.
      */
-    public void remind() {}
+    public void remind() {
+        new Reminder();
+    }
 
     /**
      * Creates a user Object
@@ -254,7 +298,9 @@ public class Facade {
                     }
                 }
         );
-        productMenu.showMenu();
+        if (productMenu != null) {
+            productMenu.showMenu();
+        }
     }
 
     public boolean logout() {

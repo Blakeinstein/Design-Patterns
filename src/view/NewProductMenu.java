@@ -80,11 +80,10 @@ public class NewProductMenu extends JDialog {
                 "Meat",
                 "Produce"
         };
-        int selection = JOptionPane.showOptionDialog(
+        String selection = (String)JOptionPane.showInputDialog(
                 AppView.Get().getFrame(),
                 "What kind of product would you like?",
                 "Create a new product",
-                JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 opts,
@@ -92,14 +91,15 @@ public class NewProductMenu extends JDialog {
         );
 
         NewProductMenu dialog = new NewProductMenu(handler);
-        dialog.pack();
 
+        if (selection == null) return null;
         switch (selection) {
-            case 0:
+            case "Meat":
                 return new MeatProductMenu(dialog);
-            case 1:
-            default:
+            case "Produce":
                 return new ProduceProductMenu(dialog);
+            default:
+                return null;
         }
     }
 
@@ -108,6 +108,7 @@ public class NewProductMenu extends JDialog {
         this.setTitle(
                 String.format("New %s product", productType == Product.PRODUCT_TYPE.Meat ? "Meat" : "Produce")
         );
+        this.setLocationRelativeTo(AppView.Get().getFrame());
         this.pack();
         this.setVisible(true);
     }

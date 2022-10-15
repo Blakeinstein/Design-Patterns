@@ -18,6 +18,11 @@ public class AppView {
     private JPanel toolbox;
     private JButton addTrading;
     private JButton addProduct;
+    private JButton viewTrading;
+    private JButton markOffering;
+    private JButton submitOffering;
+    private JButton createReminder;
+    private JButton viewOffering;
 
     private static AppView appInstance;
 
@@ -60,7 +65,12 @@ public class AppView {
         refresh.addActionListener(e -> AppView.this.facade.attachProductToUser());
 
         addTrading.addActionListener(e -> AppView.this.facade.addTrading());
+        viewTrading.addActionListener(e -> AppView.this.facade.viewTrading());
         addProduct.addActionListener(e -> AppView.this.facade.productOperation());
+        viewOffering.addActionListener(e -> AppView.this.facade.viewOffering());
+        markOffering.addActionListener(e -> AppView.this.facade.markOffering());
+        submitOffering.addActionListener(e -> AppView.this.facade.submitOffering());
+        createReminder.addActionListener(e -> AppView.this.facade.remind());
     }
 
     public static AppView Get(){
@@ -118,5 +128,9 @@ public class AppView {
             newModel.addElement(prod.getName());
         }
         this.productView.setModel(newModel);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
