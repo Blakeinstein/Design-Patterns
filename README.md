@@ -114,6 +114,20 @@
 
 ### Via precompiled binary
 
-1. A binary exists as `artifacts/bin/Binary.jar` that can be used to execute the project skipping the compilation step. Minimum `JDK 16`.
+1. A binary exists as `bin.jar` that can be used to execute the project skipping the compilation step. Minimum `JDK 16`. Please run it in the same directory with the `Data` subdirectory  present in the same directory
+
+## Changing the dataset.
+
+All used data is present in the `Data` sub directory, new datasets can be placed in this directory. Take care to 
+
+1. Match the filenames as is, they are case sensitive.
+
+2. User and product info doesn't live update and required application restart, but user-product relations can be updated by clicking refresh.
+
+3. The file data follow a particular format where, each new entry is in a new line and the parts of the data are seperate with a color `:` .
+
+
+
+
 
 
