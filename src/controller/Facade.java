@@ -10,6 +10,10 @@ import view.*;
 import javax.swing.*;
 import java.util.Date;
 
+/**
+ * Controller class for the entire app.
+ * Implements the Facade design pattern
+ */
 public class Facade {
     /**
      * The type of the user: Buyer: 0, Seller: 1
@@ -38,6 +42,9 @@ public class Facade {
      */
     private Person thePerson;
 
+    /**
+     * Public constructor
+     */
     public Facade() {
         this.createProductList();
         this.offeringList = new OfferingList();
@@ -381,6 +388,10 @@ public class Facade {
         }
     }
 
+    /**
+     * Logs the user out
+     * @return CONST false for compatibility with login
+     */
     public boolean logout() {
         this.UserType = null;
         this.thePerson = null;
@@ -388,10 +399,18 @@ public class Facade {
         return false;
     }
 
+    /**
+     * Gets the username of the logged-in user
+     * @return name of the user
+     */
     public String getLoggedInUserName() {
       return this.thePerson.getName();
     }
 
+    /**
+     * accepts a node visitor, and passes it to the product list
+     * @param visitor the incoming visitor
+     */
     public void accept(NodeVisitor visitor) {
        this.theProductList.accept(visitor);
     }

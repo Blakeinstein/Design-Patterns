@@ -2,6 +2,9 @@ package view;
 
 import models.Product;
 
+/** Product menu for produce products
+ * Implements the bridge design pattern.
+ */
 public class ProduceProductMenu implements ProductMenu {
 
     private final NewProductMenu dialog;

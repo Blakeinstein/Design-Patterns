@@ -1,5 +1,9 @@
 package view;
 
+/**
+ * Abstract interface for Product menus
+ * Implements the bridge design pattern.
+ */
 public interface ProductMenu {
 
     void showMenu();

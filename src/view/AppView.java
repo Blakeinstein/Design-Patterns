@@ -8,6 +8,11 @@ import util.ProductIterator;
 
 import javax.swing.*;
 
+/**
+ * Application GUI entry point.
+ * Instantiates an instance of a facade to control and
+ * execute several actions in the app.
+ */
 public class AppView {
     private JButton loginButton;
     private JButton createNewUserButton;
@@ -33,6 +38,7 @@ public class AppView {
     private boolean isUserLoggedIn = false;
 
     private AppView() {
+        // Create a facade to control app actions.
         this.facade = new Facade();
         this.frame = new JFrame("PTBS");
         this.frame.setContentPane(this.mainFrame);

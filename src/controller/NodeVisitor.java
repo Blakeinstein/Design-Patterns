@@ -5,7 +5,7 @@ import models.Trading;
 
 /**
  * Abstract class of the visitor which can visit a Facade,
- * a Trading or a Product.
+ * a Trading or a Product. Implements the visitor design pattern.
  */
 public abstract class NodeVisitor {
 

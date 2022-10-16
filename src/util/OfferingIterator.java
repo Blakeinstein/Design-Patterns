@@ -5,10 +5,16 @@ import models.OfferingList;
 
 
 /**
- * A subclass of ListIterator to iterate over an Offeringlist.
+ * A subclass of ListIterator to iterate over an Offering list.
  */
 public class OfferingIterator implements ListIterator<OfferingList, Offering> {
+    /**
+     * Offering list to iterate over.
+     */
     private final OfferingList iterable;
+    /**
+     * Current head pointer of the iterator.
+     */
     private int idx = 0;
 
     public OfferingIterator(OfferingList list) {

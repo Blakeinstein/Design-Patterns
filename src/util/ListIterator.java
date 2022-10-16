@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Abstract iterator class to defined iterating functions.
  * @param <T> ArrayList container for Y
  * @param <Y> Iterable
+ * Implements the iterator design pattern.
  */
 public interface ListIterator<T extends ArrayList<Y>, Y> {
 

@@ -5,18 +5,44 @@ import util.Files;
 import models.Person;
 import models.Seller;
 import util.Utils;
+import view.AppView;
 import view.LoginMenu;
 
+import javax.swing.*;
 import java.util.HashMap;
 
+/**
+ * Login controller class, implements Facade and Singleton design pattern
+ */
 public class Login {
+    /**
+     * Enum for user type
+     * Buyer = 0
+     * Seller = 1
+     */
     public enum USER_TYPE {
         Buyer, Seller
     }
+
+    /**
+     * Information about available users.
+     */
     public static class LoginData {
+        /**
+         * Name of user
+         */
         public final String name;
+        /**
+         * password for the user
+         */
         public final String password;
+        /**
+         * Corresponding person object
+         */
         public final Person person;
+        /**
+         * Type of the user
+         */
         public final USER_TYPE USERTYPE;
 
         public LoginData(String name, String password, Person person, USER_TYPE USERTYPE) {
@@ -26,11 +52,25 @@ public class Login {
             this.USERTYPE = USERTYPE;
         }
     }
+
+    /**
+     * Instance of login - Singleton Design Pattern
+     */
     private static Login instance = null;
+
+    /**
+     * Map of userName to loginData for efficient lookups
+     */
     private final HashMap<String, LoginData> users;
 
+    /**
+     * Login data for current user trying to log in.
+     */
     public LoginData userInfo = null;
 
+    /**
+     * public constructor, attempts to read buyer and seller info, and construct internal DB
+     */
     private Login() {
         this.users = new HashMap<>();
         String buyerInfo = Files.GetBuyerInfo();
@@ -45,10 +85,23 @@ public class Login {
                 this.addNewUser(parts[0], parts[1], USER_TYPE.Seller, false);
             }
         } catch (Exception e) {
-            System.out.println("Error reading user login info");
-            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    e.getMessage(),
+                    "Error reading user login info",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
+
+    /**
+     * Adds a new user to internal db
+     * @param userName username of new user
+     * @param password password of the new user
+     * @param type type of the new user
+     * @param updateFile Should update db on disk.
+     * @throws Exception if user already exists, or disk write fails
+     */
 
     public void addNewUser(String userName, String password, USER_TYPE type, Boolean updateFile) throws Exception {
         if (this.users.containsKey(userName))
@@ -71,11 +124,15 @@ public class Login {
             String fileName = switch (type) {
                 case Buyer -> "BuyerInfo.txt";
                 case Seller -> "SellerInfo.txt";
-                default -> throw new Exception("Invalid user type");
             };
             Files.WriteLineToFile(fileName, String.format("%s:%s", userName, password));
         }
     }
+
+    /**
+     * Gets the instance of the Login singleton
+     * @return instance of Login
+     */
 
     public static Login GetInstance() {
         if (instance == null) {
@@ -83,6 +140,11 @@ public class Login {
         }
         return instance;
     }
+
+    /**
+     * Attempts user login flow
+     * @return true if user logs in successfully.
+     */
 
     public LoginData userLogin() {
         LoginMenu dialog = new LoginMenu(
@@ -107,6 +169,11 @@ public class Login {
         return this.userInfo;
     }
 
+    /**
+     * checks if user exists in internal db
+     * @param userName username to check
+     * @return true if user exists, false otherwise.
+     */
     public boolean hasUser(String userName) {
         return this.users.containsKey(userName);
     }

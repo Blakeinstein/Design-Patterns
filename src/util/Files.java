@@ -69,12 +69,24 @@ public class Files {
         return ReadText("UserProduct.txt");
     }
 
+    /**
+     * Write contents to the file, fileName overwriting existing contents
+     * @param fileName name of file, to write to
+     * @param contents contents to write
+     * @throws IOException if file cannot be found, read or written to.
+     */
     public static void WriteToFile(String fileName, String contents) throws IOException {
         var br = new BufferedWriter(new FileWriter("Data/" + fileName, false));
         br.write(contents);
         br.close();
     }
 
+    /**
+     * Append a line to the end of the file
+     * @param fileName name of file, to write to
+     * @param line line to append
+     * @throws IOException if file cannot be found, read or written to.
+     */
     public static void WriteLineToFile(String fileName, String line) throws IOException {
         var br = new BufferedWriter(new FileWriter("Data/" + fileName, true));
         br.append(line).append("\n");

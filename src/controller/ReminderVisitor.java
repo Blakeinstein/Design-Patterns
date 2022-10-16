@@ -5,9 +5,12 @@ import models.Trading;
 import models.Reminder;
 
 /**
- * Implementation of NodeVisitor with concrete logic.
+ * Implementation of NodeVisitor with concrete logic. Implements the Visitor Design pattern
  */
 public class ReminderVisitor extends NodeVisitor{
+    /**
+     * internal reminder data structure.
+     */
     private final Reminder reminder;
 
     public ReminderVisitor(Reminder reminder) {

@@ -3,6 +3,9 @@ package models;
 import view.NewProductMenu;
 import view.ProductMenu;
 
+/**
+ * An abstract idea of a person. Implements the Bridge design pattern.
+ */
 public abstract class Person {
     /**
      * Name of the person.
@@ -65,12 +68,25 @@ public abstract class Person {
      */
     public void showLabels() {}
 
+    /**
+     * Abstract function for creating product menu for a person
+     * @param handler the handler for the product menu
+     * @return instance of a product menu
+     */
+
     public abstract ProductMenu CreateProductMenu(NewProductMenu.NewProductHandler handler);
 
+    /**
+     * Gets the associated products with the person
+     * @return a product list
+     */
     public ClassProductList getAssociatedProducts() {
         return this.associatedProducts;
     }
 
+    /**
+     * Clears associated products with the user.
+     */
     public void resetAssociatedProducts() {
         this.associatedProducts.clear();
     }
