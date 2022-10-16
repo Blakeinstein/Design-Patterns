@@ -6,7 +6,6 @@ import util.OfferingIterator;
 import util.ProductIterator;
 import util.Utils;
 import view.*;
-import view.Reminder;
 
 import javax.swing.*;
 import java.util.Date;
@@ -229,8 +228,13 @@ public class Facade {
      * upcoming overdue trading window.
      */
     public void remind() {
-        new ReminderVisitor();
-        new Reminder();
+        var reminder = new Reminder();
+        var visitor = new ReminderVisitor(reminder);
+        visitor.visitFacade(this);
+        var dialog = new ReminderView(reminder);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
 
     /**
@@ -246,8 +250,12 @@ public class Facade {
                     true
             );
         } catch (Exception e) {
-            System.out.println("Error creating user");
-            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    e.getMessage(),
+                    "Error creating user",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 
@@ -264,8 +272,12 @@ public class Facade {
                 this.theProductList.add(new Product(parts[1], parts[0]));
             }
         } catch (Exception e) {
-            System.out.println("Error in reading product list.");
-            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    e.getMessage(),
+                    "Error in reading product list.",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 
@@ -378,9 +390,6 @@ public class Facade {
     }
 
     public void accept(NodeVisitor visitor) {
-        var it = new ProductIterator(this.theProductList);
-        while (it.hasNext()) {
-            visitor.visitProduct(it.Next());
-        }
+       this.theProductList.accept(visitor);
     }
 }

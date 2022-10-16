@@ -3,10 +3,8 @@ package util;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
     private static SimpleDateFormat dateFormatter;
@@ -30,5 +28,29 @@ public class Utils {
             Utils.dateFormatter.setTimeZone(TimeZone.getTimeZone("America/Phoenix"));
         }
         return Utils.dateFormatter;
+    }
+
+    public static String FormatTimeDifference(Date end, Date start) {
+        // code block inspired from https://stackoverflow.com/a/10650881/7799568, credits to Sebastian Lorber.
+        var ms = end.getTime() - start.getTime();
+        var units = new ArrayList<TimeUnit>(EnumSet.allOf(TimeUnit.class));
+        Collections.reverse(units);
+
+        var unitDifferences = new LinkedHashMap<TimeUnit,Long>();
+        var msDiff = ms;
+
+        for ( var unit : units ) {
+            var difference = unit.convert(msDiff,TimeUnit.MILLISECONDS);
+            msDiff -= unit.toMillis(difference);
+
+            unitDifferences.put(unit,difference);
+        }
+
+        return String.format(
+                "%s days, %s hours and %s minutes",
+                unitDifferences.get(TimeUnit.DAYS),
+                unitDifferences.get(TimeUnit.HOURS),
+                unitDifferences.get(TimeUnit.MINUTES)
+        );
     }
 }

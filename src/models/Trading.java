@@ -16,7 +16,9 @@ public class Trading {
         this.product = product;
         this.due = due;
     }
-    public void accept(NodeVisitor visitor) {};
+    public boolean accept(NodeVisitor visitor) {
+        return this.due.getTime() > (new Date()).getTime();
+    };
 
     public Product getProduct() {
         return product;

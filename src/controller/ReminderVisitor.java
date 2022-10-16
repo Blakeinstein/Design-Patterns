@@ -2,11 +2,17 @@ package controller;
 
 import models.Product;
 import models.Trading;
+import models.Reminder;
 
 /**
  * Implementation of NodeVisitor with concrete logic.
  */
 public class ReminderVisitor extends NodeVisitor{
+    private Reminder reminder;
+
+    public ReminderVisitor(Reminder reminder) {
+        this.reminder = reminder;
+    }
     /**
      * Visit a product, and in turn visit each trading in
      * the product.
@@ -23,7 +29,11 @@ public class ReminderVisitor extends NodeVisitor{
      * @param trading Trading to visit.
      */
     public void visitTrading(Trading trading) {
-        trading.accept(this);
+        if (trading.accept(this)) {
+            this.reminder.addPending(trading);
+        } else {
+            this.reminder.addOverdue(trading);
+        }
     }
 
     /**
