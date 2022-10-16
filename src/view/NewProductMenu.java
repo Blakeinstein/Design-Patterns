@@ -60,6 +60,11 @@ public class NewProductMenu extends JDialog {
         }
     }
 
+    /**
+     * Factory method for appropriate product menu dialog, for buyer, seller and the product tpyes
+     * @param handler response handler
+     * @return a product menu instance
+     */
     public static ProductMenu CreateProductDialog(NewProductHandler handler) {
         Object[] opts = {
                 "Meat",
