@@ -9,6 +9,7 @@ import view.*;
 import view.Reminder;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class Facade {
     /**
@@ -33,15 +34,17 @@ public class Facade {
 
     private OfferingList offeringList;
 
+    private ArrayList<Trading> tradingList;
+
     /**
      * The current user
      */
     private Person thePerson;
 
     public Facade() {
-
         this.createProductList();
         this.offeringList = new OfferingList();
+        this.tradingList = new ArrayList<>();
     }
 
     /**
@@ -74,7 +77,7 @@ public class Facade {
         var it = new ProductIterator(this.theProductList);
         while (it.hasNext()) {
             var next = it.Next();
-            if (!userList.contains(next)) {
+            if (userList.contains(next)) {
                 availableList.add(next);
             }
         }
@@ -87,10 +90,8 @@ public class Facade {
                 availableList,
                 new TradingMenu.TradingMenuActions() {
                     public void onOk(Product selectedProduct) throws Exception {
-                        Facade.this.thePerson.addAssociatedProduct(selectedProduct);
-                        Files.WriteLineToFile(
-                                "UserProduct.txt",
-                                String.format("%s:%s", Facade.this.thePerson.getName(), selectedProduct.getName())
+                        Facade.this.tradingList.add(
+                                new Trading(selectedProduct, Facade.this.thePerson)
                         );
                     }
                 }
@@ -104,22 +105,22 @@ public class Facade {
      * Views the trading information.
      */
     public void viewTrading() {
-        if (this.theSelectProduct == null) {
+        if (this.tradingList.size() == 0) {
             JOptionPane.showMessageDialog(
                     AppView.Get().getFrame(),
-                    "No product selected",
-                    "Error viewing offering",
+                    "No tradings to show",
+                    "Error viewing trading",
                     JOptionPane.ERROR_MESSAGE
             );
         } else {
+            var sb = new StringBuilder();
+            for (var t : this.tradingList) {
+                sb.append(t.getProduct().getName()).append("\n");
+            }
             JOptionPane.showMessageDialog(
                     AppView.Get().getFrame(),
-                    String.format(
-                            "Product Name: %s\nProduct Type: %s",
-                            this.theSelectProduct.getName(),
-                            this.nProductCategory == Product.PRODUCT_TYPE.Produce ? "Produce" : "Meat"
-                    ),
-                    String.format("About product: %s", this.theSelectProduct.getName()),
+                    sb.toString(),
+                    "Trading list",
                     JOptionPane.INFORMATION_MESSAGE
             );
         }
@@ -129,7 +130,26 @@ public class Facade {
      * View the given offering.
      */
     public void viewOffering() {
-
+        if (this.offeringList.size() == 0) {
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    "No offerings to show",
+                    "Error viewing offering",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } else {
+            var sb = new StringBuilder();
+            var it = new OfferingIterator(this.offeringList);
+            while(it.hasNext()) {
+                sb.append(it.Next().getProduct().getName()).append("\n");
+            }
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    sb.toString(),
+                    "Offering list",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
     }
 
     /**
@@ -145,7 +165,7 @@ public class Facade {
             );
         } else {
             this.offeringList.add(
-                    new Offering(this.theSelectProduct)
+                    new Offering(this.theSelectProduct, this.thePerson)
             );
             JOptionPane.showMessageDialog(
                     AppView.Get().getFrame(),
@@ -188,6 +208,7 @@ public class Facade {
      * upcoming overdue trading window.
      */
     public void remind() {
+        new ReminderVisitor();
         new Reminder();
     }
 
