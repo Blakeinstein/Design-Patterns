@@ -32,9 +32,9 @@ public class Facade {
      */
     private ClassProductList theProductList;
 
-    private OfferingList offeringList;
+    private final OfferingList offeringList;
 
-    private ArrayList<Trading> tradingList;
+    private final ArrayList<Trading> tradingList;
 
     /**
      * The current user
@@ -72,33 +72,41 @@ public class Facade {
      * be refreshed separately.
      */
     public void addTrading() {
-        var availableList = new ClassProductList();
-        var userList = this.thePerson.getAssociatedProducts();
-        var it = new ProductIterator(this.theProductList);
-        while (it.hasNext()) {
-            var next = it.Next();
-            if (userList.contains(next)) {
-                availableList.add(next);
+        if (this.theSelectProduct == null) {
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    "No product selected",
+                    "Error adding trading",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+        for (var t : this.tradingList) {
+            if (t.getProduct() == this.theSelectProduct) {
+                JOptionPane.showMessageDialog(
+                        AppView.Get().getFrame(),
+                        "Product already marked as trading.",
+                        "Error adding trading",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
             }
         }
-        if (availableList.size() == 0) {
-            JOptionPane.showMessageDialog(AppView.Get().getFrame(), "No more products to associate");
-            return;
-        }
-        var dialog = new TradingMenu(
-                this.UserType,
-                availableList,
-                new TradingMenu.TradingMenuActions() {
-                    public void onOk(Product selectedProduct) throws Exception {
-                        Facade.this.tradingList.add(
-                                new Trading(selectedProduct, Facade.this.thePerson)
-                        );
-                    }
-                }
+        this.tradingList.add(
+                new Trading(
+                        this.theSelectProduct,
+                        this.thePerson
+                )
         );
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+        JOptionPane.showMessageDialog(
+                AppView.Get().getFrame(),
+                String.format(
+                        "Product %s of type %s successfully marked as trading.",
+                        this.theSelectProduct.getName(),
+                        this.nProductCategory == Product.PRODUCT_TYPE.Meat ? "Meat" : "Produce"
+                ),
+                String.format("Successfully marked offering for %s", this.theSelectProduct.getName()),
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }
 
     /**
@@ -113,16 +121,13 @@ public class Facade {
                     JOptionPane.ERROR_MESSAGE
             );
         } else {
-            var sb = new StringBuilder();
-            for (var t : this.tradingList) {
-                sb.append(t.getProduct().getName()).append("\n");
-            }
-            JOptionPane.showMessageDialog(
-                    AppView.Get().getFrame(),
-                    sb.toString(),
-                    "Trading list",
-                    JOptionPane.INFORMATION_MESSAGE
+            var dialog = new TradingMenu(
+                    this.UserType,
+                    this.tradingList
             );
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
         }
     }
 
@@ -138,17 +143,13 @@ public class Facade {
                     JOptionPane.ERROR_MESSAGE
             );
         } else {
-            var sb = new StringBuilder();
-            var it = new OfferingIterator(this.offeringList);
-            while(it.hasNext()) {
-                sb.append(it.Next().getProduct().getName()).append("\n");
-            }
-            JOptionPane.showMessageDialog(
-                    AppView.Get().getFrame(),
-                    sb.toString(),
-                    "Offering list",
-                    JOptionPane.INFORMATION_MESSAGE
+            var dialog = new OfferingMenu(
+                    this.UserType,
+                    this.offeringList
             );
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
         }
     }
 
@@ -348,6 +349,8 @@ public class Facade {
     public boolean logout() {
         this.UserType = null;
         this.thePerson = null;
+        this.tradingList.clear();
+        this.offeringList.clear();
         return false;
     }
 

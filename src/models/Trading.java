@@ -16,4 +16,8 @@ public class Trading {
     public Product getProduct() {
         return product;
     }
+
+    public Person getPerson() {
+        return person;
+    }
 }
