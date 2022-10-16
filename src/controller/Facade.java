@@ -336,7 +336,7 @@ public class Facade {
     /**
      * Displays product list in a dialog.
      */
-    public void selectProduct(String productName) throws Exception{
+    public void selectProduct(String productName) {
         ProductIterator it = new ProductIterator(
                 this.thePerson.getAssociatedProducts()
         );
@@ -348,7 +348,8 @@ public class Facade {
                 return;
             }
         }
-        throw new Exception("Invalid product selected");
+        this.theSelectProduct = null;
+        this.nProductCategory= null;
     }
 
     /**
