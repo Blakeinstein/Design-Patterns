@@ -82,21 +82,10 @@
                   <title-color color="-4473925"/>
                 </border>
                 <children>
-                  <component id="91b00" class="javax.swing.JList" binding="productView">
+                  <component id="748d2" class="javax.swing.JList" binding="productView">
                     <constraints/>
                     <properties>
-                      <fixedCellHeight value="30"/>
-                      <fixedCellWidth value="-1"/>
-                      <focusCycleRoot value="true"/>
-                      <focusTraversalPolicyProvider value="false"/>
                       <font size="16"/>
-                      <foreground color="-10526624"/>
-                      <name value="Associated Products"/>
-                      <opaque value="true"/>
-                      <selectionForeground color="-10526624"/>
-                      <selectionMode value="0"/>
-                      <toolTipText value="List of associated products"/>
-                      <visible value="false"/>
                     </properties>
                   </component>
                 </children>
@@ -120,29 +109,9 @@
                       <toolTipText value="Refresh product list"/>
                     </properties>
                   </component>
-                  <component id="ffda" class="javax.swing.JButton" binding="addTrading">
-                    <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="1.0" weighty="1.0"/>
-                    </constraints>
-                    <properties>
-                      <text value="Add trading"/>
-                      <toolTipText value="Add a new trading"/>
-                    </properties>
-                  </component>
-                  <component id="92579" class="javax.swing.JButton" binding="viewTrading">
-                    <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                    <properties>
-                      <text value="View Trading"/>
-                      <toolTipText value="View info about the selected trading"/>
-                    </properties>
-                  </component>
                   <component id="9817a" class="javax.swing.JButton" binding="addProduct">
                     <constraints>
-                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -151,7 +120,7 @@
                   </component>
                   <component id="51b74" class="javax.swing.JButton" binding="viewOffering">
                     <constraints>
-                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -160,7 +129,7 @@
                   </component>
                   <component id="9e4a1" class="javax.swing.JButton" binding="markOffering">
                     <constraints>
-                      <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
@@ -170,12 +139,32 @@
                   </component>
                   <component id="93995" class="javax.swing.JButton" binding="submitOffering">
                     <constraints>
-                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
                       <text value="Submit offering"/>
                       <toolTipText value="Submit products marked as offering"/>
+                    </properties>
+                  </component>
+                  <component id="ffda" class="javax.swing.JButton" binding="addTrading">
+                    <constraints>
+                      <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="1.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="Add trading"/>
+                      <toolTipText value="Add a new trading"/>
+                    </properties>
+                  </component>
+                  <component id="92579" class="javax.swing.JButton" binding="viewTrading">
+                    <constraints>
+                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="View Trading"/>
+                      <toolTipText value="View info about the selected trading"/>
                     </properties>
                   </component>
                   <component id="19fb5" class="javax.swing.JButton" binding="createReminder">

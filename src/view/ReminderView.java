@@ -22,7 +22,12 @@ public class ReminderView extends JDialog {
         var overdue = new DefaultListModel<String>();
         for (var t : reminder.getOverdue()) {
             overdue.addElement(
-                    Utils.FormatTimeDifference(new Date(), t.getDueDate())
+                    String.format(
+                            "%s, overdue by: %s for %s",
+                            t.getProduct().getName(),
+                            Utils.FormatTimeDifference(new Date(), t.getDueDate()),
+                            t.getPerson().getName()
+                    )
             );
         }
         this.overdueList.setModel(overdue);
@@ -30,7 +35,12 @@ public class ReminderView extends JDialog {
         var pending = new DefaultListModel<String>();
         for (var t : reminder.getPending()) {
             pending.addElement(
-                    Utils.FormatTimeDifference(t.getDueDate(), new Date())
+                    String.format(
+                            "%s, due in: %s for %s",
+                            t.getProduct().getName(),
+                            Utils.FormatTimeDifference(t.getDueDate(), new Date()),
+                            t.getPerson().getName()
+                    )
             );
         }
         this.pendingList.setModel(pending);
