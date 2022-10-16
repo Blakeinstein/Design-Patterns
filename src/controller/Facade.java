@@ -75,35 +75,36 @@ public class Facade {
                     "Error adding trading",
                     JOptionPane.ERROR_MESSAGE
             );
-        }
-        var dialog = new TradingMenu(
-                this.UserType,
-                new TradingMenu.TradingMenuActions() {
-                    public void onOk(Date d) {
-                        Facade.this.theSelectProduct.addTrading(
-                                new Trading(
-                                        Facade.this.theSelectProduct,
-                                        Facade.this.thePerson,
-                                        d
-                                )
-                        );
-                        JOptionPane.showMessageDialog(
-                                AppView.Get().getFrame(),
-                                String.format(
-                                        "Product %s of type %s successfully marked as trading due on %s",
-                                        Facade.this.theSelectProduct.getName(),
-                                        Facade.this.nProductCategory == Product.PRODUCT_TYPE.Meat ? "Meat" : "Produce",
-                                        Utils.getDateFormatter().format(d)
-                                ),
-                                String.format("Successfully marked offering for %s", Facade.this.theSelectProduct.getName()),
-                                JOptionPane.INFORMATION_MESSAGE
-                        );
+        } else {
+            var dialog = new TradingMenu(
+                    this.UserType,
+                    new TradingMenu.TradingMenuActions() {
+                        public void onOk(Date d) {
+                            Facade.this.theSelectProduct.addTrading(
+                                    new Trading(
+                                            Facade.this.theSelectProduct,
+                                            Facade.this.thePerson,
+                                            d
+                                    )
+                            );
+                            JOptionPane.showMessageDialog(
+                                    AppView.Get().getFrame(),
+                                    String.format(
+                                            "Product %s of type %s successfully marked as trading due on %s",
+                                            Facade.this.theSelectProduct.getName(),
+                                            Facade.this.nProductCategory == Product.PRODUCT_TYPE.Meat ? "Meat" : "Produce",
+                                            Utils.getDateFormatter().format(d)
+                                    ),
+                                    String.format("Successfully marked offering for %s", Facade.this.theSelectProduct.getName()),
+                                    JOptionPane.INFORMATION_MESSAGE
+                            );
+                        }
                     }
-                }
-        );
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+            );
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        }
     }
 
     /**
@@ -117,37 +118,38 @@ public class Facade {
                     "Error viewing tradings",
                     JOptionPane.ERROR_MESSAGE
             );
-        }
-        var tradings = this.theSelectProduct.getTradings();
-        if (tradings.size() == 0) {
+        } else {
+            var tradings = this.theSelectProduct.getTradings();
+            if (tradings.size() == 0) {
+                JOptionPane.showMessageDialog(
+                        AppView.Get().getFrame(),
+                        "No tradings for selected product",
+                        "Error viewing tradings",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+            var sb = new StringBuilder();
+            for (var t : tradings) {
+                sb.append(
+                        String.format(
+                                "Product: %s, Owner: %s, Due: %s",
+                                t.getProduct().getName(),
+                                t.getPerson().getName(),
+                                Utils.getDateFormatter().format(t.getDueDate())
+                        )
+                ).append("\n");
+            }
             JOptionPane.showMessageDialog(
                     AppView.Get().getFrame(),
-                    "No tradings for selected product",
-                    "Error viewing tradings",
-                    JOptionPane.ERROR_MESSAGE
+                    sb.toString(),
+                    String.format(
+                            "Tradings for %s, %s",
+                            this.UserType == Login.USER_TYPE.Seller ? "Seller" : "Buyer",
+                            this.thePerson.getName()
+                    ),
+                    JOptionPane.INFORMATION_MESSAGE
             );
         }
-        var sb = new StringBuilder();
-        for (var t : tradings) {
-            sb.append(
-                    String.format(
-                            "Product: %s, Owner: %s, Due: %s",
-                            t.getProduct().getName(),
-                            t.getPerson().getName(),
-                            Utils.getDateFormatter().format(t.getDueDate())
-                    )
-            ).append("\n");
-        }
-        JOptionPane.showMessageDialog(
-                AppView.Get().getFrame(),
-                sb.toString(),
-                String.format(
-                        "Tradings for %s, %s",
-                        this.UserType == Login.USER_TYPE.Seller ? "Seller" : "Buyer",
-                        this.thePerson.getName()
-                ),
-                JOptionPane.INFORMATION_MESSAGE
-        );
     }
 
     /**
