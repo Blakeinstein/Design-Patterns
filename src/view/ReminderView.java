@@ -9,8 +9,8 @@ import java.util.Date;
 public class ReminderView extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
-    private JList overdueList;
-    private JList pendingList;
+    private JList<String> overdueList;
+    private JList<String> pendingList;
 
     public ReminderView(Reminder reminder) {
         setContentPane(contentPane);

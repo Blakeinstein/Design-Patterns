@@ -7,8 +7,7 @@ import java.awt.event.*;
 
 public class LoginMenu extends JDialog {
     public static class LoginFormActions {
-        public void onOk(String userName, String password, Login.USER_TYPE USERTYPE, boolean isRegister) throws Exception{};
-        public void onCancel() throws Exception {};
+        public void onOk(String userName, String password, Login.USER_TYPE USERTYPE, boolean isRegister) throws Exception{}
     }
     private final LoginFormActions formActions;
     private JPanel contentPane;
@@ -17,11 +16,10 @@ public class LoginMenu extends JDialog {
     private JPasswordField passwordField;
     private JTextField userNameField;
     private JRadioButton isBuyer;
-    private JRadioButton isSeller;
     private JPanel accountTypeRadio;
     private JLabel accountTypeLabel;
 
-    private boolean isRegister;
+    private final boolean isRegister;
 
     public LoginMenu(boolean isRegister, LoginFormActions formActions) {
         this.formActions = formActions;
@@ -32,32 +30,20 @@ public class LoginMenu extends JDialog {
         setResizable(false);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        buttonOK.addActionListener(e -> onOK());
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        buttonCancel.addActionListener(e -> dispose());
 
-        // call onCancel() when cross is clicked
+        // call dispose()() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                onCancel();
+                dispose();
             }
         });
 
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        // call dispose()() on ESCAPE
+        contentPane.registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         this.accountTypeRadio.setVisible(isRegister);
         this.accountTypeLabel.setVisible(isRegister);
@@ -75,16 +61,6 @@ public class LoginMenu extends JDialog {
                     this.isBuyer.isSelected() ? Login.USER_TYPE.Buyer : Login.USER_TYPE.Seller,
                     this.isRegister
             );
-            dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(getRootPane(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void onCancel() {
-        // add your code here if necessary
-        try {
-            this.formActions.onCancel();
             dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(getRootPane(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

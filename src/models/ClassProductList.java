@@ -14,5 +14,5 @@ public class ClassProductList extends ArrayList<Product> {
         while (it.hasNext()) {
             visitor.visitProduct(it.Next());
         }
-    };
+    }
 }

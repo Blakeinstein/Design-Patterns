@@ -7,8 +7,7 @@ import java.awt.event.*;
 
 public class NewProductMenu extends JDialog {
     public static class NewProductHandler {
-        public void onOk(String productName, Product.PRODUCT_TYPE type, boolean associate) throws Exception {};
-        public void onCancel() throws Exception {};
+        public void onOk(String productName, Product.PRODUCT_TYPE type, boolean associate) throws Exception {}
     }
     private JPanel contentPane;
     private JButton buttonOK;
@@ -27,18 +26,18 @@ public class NewProductMenu extends JDialog {
 
         buttonOK.addActionListener(e -> onOK());
 
-        buttonCancel.addActionListener(e -> onCancel());
+        buttonCancel.addActionListener(e -> dispose());
 
-        // call onCancel() when cross is clicked
+        // call dispose() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                onCancel();
+                dispose();
             }
         });
 
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        // call dispose() on ESCAPE
+        contentPane.registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         this.handler = handler;
     }
 
@@ -56,20 +55,6 @@ public class NewProductMenu extends JDialog {
                     getRootPane(),
                     e.getMessage(),
                     "Error creating product",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
-    }
-
-    private void onCancel() {
-        try {
-            this.handler.onCancel();
-            dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(
-                    getRootPane(),
-                    e.getMessage(),
-                    "Error",
                     JOptionPane.ERROR_MESSAGE
             );
         }
@@ -93,14 +78,11 @@ public class NewProductMenu extends JDialog {
         NewProductMenu dialog = new NewProductMenu(handler);
 
         if (selection == null) return null;
-        switch (selection) {
-            case "Meat":
-                return new MeatProductMenu(dialog);
-            case "Produce":
-                return new ProduceProductMenu(dialog);
-            default:
-                return null;
-        }
+        return switch (selection) {
+            case "Meat" -> new MeatProductMenu(dialog);
+            case "Produce" -> new ProduceProductMenu(dialog);
+            default -> null;
+        };
     }
 
     public void showMenu(Product.PRODUCT_TYPE productType) {

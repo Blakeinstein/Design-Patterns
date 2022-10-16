@@ -12,7 +12,7 @@ public abstract class Person {
     /**
      * List of associated products.
      */
-    private ClassProductList associatedProducts;
+    private final ClassProductList associatedProducts;
 
     /**
      * Points to a concrete ProductMenu object.

@@ -7,7 +7,7 @@ import models.Product;
  * A subclass of ListIterator to iterate over a ClassProductList.
  */
 public class ProductIterator implements ListIterator<ClassProductList, Product> {
-    private ClassProductList iterable;
+    private final ClassProductList iterable;
     private int idx = 0;
 
     public ProductIterator(ClassProductList list) {

@@ -40,7 +40,6 @@ public class AppView {
         this.frame.pack();
         this.frame.setResizable(false);
         this.frame.setLocationRelativeTo(null);
-        this.frame.setVisible(true);
         loginButton.addActionListener(e -> AppView.this.changeLoginState());
 
         createNewUserButton.addActionListener(e -> AppView.this.createNewUserFlow());
@@ -130,7 +129,7 @@ public class AppView {
         this.productView.setModel(newModel);
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
+    public void show() {
+        this.frame.setVisible(true);
     }
 }

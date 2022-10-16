@@ -137,7 +137,7 @@
                   <text value="Buyer"/>
                 </properties>
               </component>
-              <component id="89a8b" class="javax.swing.JRadioButton" binding="isSeller">
+              <component id="89a8b" class="javax.swing.JRadioButton">
                 <constraints/>
                 <properties>
                   <text value="Seller"/>

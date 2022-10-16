@@ -1,6 +1,5 @@
 package view;
 
-import models.ClassProductList;
 import models.Product;
 
 public class MeatProductMenu implements ProductMenu {

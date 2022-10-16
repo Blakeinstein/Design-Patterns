@@ -5,16 +5,12 @@ import util.Utils;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class TradingMenu extends JDialog {
 
     public static class TradingMenuActions {
-        public void onOk(Date d) throws Exception {}
-        public void onCancel() throws Exception {}
+        public void onOk(Date d) {}
     }
     private JPanel contentPane;
     private JButton buttonOK;
@@ -25,27 +21,27 @@ public class TradingMenu extends JDialog {
 
     private final TradingMenuActions handler;
 
-    public TradingMenu(Login.USER_TYPE userType, TradingMenuActions handler) {
+    public TradingMenu(Login.USER_TYPE userType, String productName, TradingMenuActions handler) {
         this.handler = handler;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-        setTitle(String.format("%s tradings", userType == Login.USER_TYPE.Buyer ? "Buyer" : "Seller"));
+        setTitle(String.format("%s trading for %s", userType == Login.USER_TYPE.Buyer ? "Buyer" : "Seller", productName));
 
         buttonOK.addActionListener(e -> onOK());
 
-        buttonCancel.addActionListener(e -> onCancel());
+        buttonCancel.addActionListener(e -> dispose());
 
-        // call onCancel() when cross is clicked
+        // call dispose() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                onCancel();
+                dispose();
             }
         });
 
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        // call dispose() on ESCAPE
+        contentPane.registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
@@ -54,7 +50,7 @@ public class TradingMenu extends JDialog {
             if (s.isEmpty()) throw new Exception("Please input date in the format dd-M-yyyy");
             var t = this.dueTime.getText();
             if (t.isEmpty()) t = "00:00:00";
-            Date date = null;
+            Date date;
             try {
                 date = Utils.getDateFormatter().parse(
                         String.format("%s %s", s, t)
@@ -70,20 +66,6 @@ public class TradingMenu extends JDialog {
                     getRootPane(),
                     e.getMessage(),
                     "Error creating product",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
-    }
-
-    private void onCancel() {
-        try {
-            this.handler.onCancel();
-            dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(
-                    getRootPane(),
-                    e.getMessage(),
-                    "Error",
                     JOptionPane.ERROR_MESSAGE
             );
         }

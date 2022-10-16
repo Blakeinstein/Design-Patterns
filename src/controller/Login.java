@@ -10,14 +10,14 @@ import view.LoginMenu;
 import java.util.HashMap;
 
 public class Login {
-    public static enum USER_TYPE {
+    public enum USER_TYPE {
         Buyer, Seller
     }
-    public class LoginData {
-        public String name;
-        public String password;
-        public Person person;
-        public USER_TYPE USERTYPE;
+    public static class LoginData {
+        public final String name;
+        public final String password;
+        public final Person person;
+        public final USER_TYPE USERTYPE;
 
         public LoginData(String name, String password, Person person, USER_TYPE USERTYPE) {
             this.name = name;
@@ -27,7 +27,7 @@ public class Login {
         }
     }
     private static Login instance = null;
-    private HashMap<String, LoginData> users;
+    private final HashMap<String, LoginData> users;
 
     public LoginData userInfo = null;
 
@@ -53,15 +53,10 @@ public class Login {
     public void addNewUser(String userName, String password, USER_TYPE type, Boolean updateFile) throws Exception {
         if (this.users.containsKey(userName))
             throw new Exception(String.format("User %s already exists", userName));
-        Person p;
-        switch (type) {
-            case Buyer:
-                p = new Buyer(userName);
-                break;
-            case Seller:
-            default:
-                p = new Seller(userName);
-        }
+        Person p = switch (type) {
+            case Buyer -> new Buyer(userName);
+            case Seller -> new Seller(userName);
+        };
         this.users.put(
                 userName,
                 new LoginData(
@@ -73,17 +68,11 @@ public class Login {
         );
 
         if (updateFile) {
-            String fileName;
-            switch (type) {
-                case Buyer:
-                    fileName = "BuyerInfo.txt";
-                    break;
-                case Seller:
-                    fileName = "SellerInfo.txt";
-                    break;
-                default:
-                    throw new Exception("Invalid user type");
-            }
+            String fileName = switch (type) {
+                case Buyer -> "BuyerInfo.txt";
+                case Seller -> "SellerInfo.txt";
+                default -> throw new Exception("Invalid user type");
+            };
             Files.WriteLineToFile(fileName, String.format("%s:%s", userName, password));
         }
     }
@@ -95,7 +84,7 @@ public class Login {
         return instance;
     }
 
-    public LoginData userLogin() throws Exception{
+    public LoginData userLogin() {
         LoginMenu dialog = new LoginMenu(
                 false,
                 new LoginMenu.LoginFormActions() {

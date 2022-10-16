@@ -9,7 +9,7 @@ import javax.swing.*;
 public class OfferingMenu extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
-    private JList offeringList;
+    private JList<String> offeringList;
 
     public OfferingMenu(Login.USER_TYPE userType, OfferingList offerings) {
         setContentPane(contentPane);

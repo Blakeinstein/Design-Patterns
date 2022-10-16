@@ -1,23 +1,22 @@
 package models;
 
 import controller.NodeVisitor;
-import controller.ReminderVisitor;
 
 import java.util.ArrayList;
 
 public class Product {
 
-    public static enum PRODUCT_TYPE {
+    public enum PRODUCT_TYPE {
         Meat, Produce
     }
 
-    private Product.PRODUCT_TYPE type;
-    private String Name;
+    private final Product.PRODUCT_TYPE type;
+    private final String Name;
 
-    private ArrayList<Trading> tradings;
+    private final ArrayList<Trading> tradings;
 
-    public Product(String productName, String productType) throws Exception {
-        this(productName, productType == "meat" ? PRODUCT_TYPE.Meat : PRODUCT_TYPE.Produce);
+    public Product(String productName, String productType) {
+        this(productName, productType.equals("meat") ? PRODUCT_TYPE.Meat : PRODUCT_TYPE.Produce);
     }
 
     public Product(String productName, PRODUCT_TYPE productType) {

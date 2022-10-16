@@ -7,27 +7,27 @@ import java.util.ArrayList;
  * @param <T> ArrayList container for Y
  * @param <Y> Iterable
  */
-public abstract interface ListIterator<T extends ArrayList<Y>, Y> {
+public interface ListIterator<T extends ArrayList<Y>, Y> {
 
     /**
      * Check if there is an item up ahead.
      * @return true if there is an item up ahead, false otherwise.
      */
-    public abstract boolean hasNext();
+    boolean hasNext();
 
     /**
      * Returns the item up ahead.
      * @return returns next item, null if hasNext() is false.
      */
-    public abstract Y Next();
+    Y Next();
 
     /**
      * Set the current item to the location before the first item.
      */
-    public abstract void MoveToHead();
+    void MoveToHead();
 
     /**
      * Remove the current item from the list.
      */
-    public abstract void Remove();
+    void Remove();
 }

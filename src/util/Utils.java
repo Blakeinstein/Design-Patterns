@@ -33,10 +33,10 @@ public class Utils {
     public static String FormatTimeDifference(Date end, Date start) {
         // code block inspired from https://stackoverflow.com/a/10650881/7799568, credits to Sebastian Lorber.
         var ms = end.getTime() - start.getTime();
-        var units = new ArrayList<TimeUnit>(EnumSet.allOf(TimeUnit.class));
+        var units = new ArrayList<>(EnumSet.allOf(TimeUnit.class));
         Collections.reverse(units);
 
-        var unitDifferences = new LinkedHashMap<TimeUnit,Long>();
+        var unitDifferences = new HashMap<TimeUnit,Long>();
         var msDiff = ms;
 
         for ( var unit : units ) {

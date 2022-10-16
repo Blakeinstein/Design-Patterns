@@ -78,6 +78,7 @@ public class Facade {
         } else {
             var dialog = new TradingMenu(
                     this.UserType,
+                    this.theSelectProduct.getName(),
                     new TradingMenu.TradingMenuActions() {
                         public void onOk(Date d) {
                             Facade.this.theSelectProduct.addTrading(

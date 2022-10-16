@@ -7,8 +7,8 @@ import java.util.ArrayList;
  * visit all the products and trading of a given user.
  */
 public class Reminder {
-    private ArrayList<Trading> overdue;
-    private ArrayList<Trading> pending;
+    private final ArrayList<Trading> overdue;
+    private final ArrayList<Trading> pending;
 
     public Reminder() {
         this.overdue = new ArrayList<>();

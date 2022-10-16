@@ -1,8 +1,6 @@
 package view;
 
-import models.ClassProductList;
 import models.Product;
-import util.ProductIterator;
 
 public class ProduceProductMenu implements ProductMenu {
 

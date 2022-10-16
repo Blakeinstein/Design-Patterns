@@ -8,7 +8,7 @@ import models.Reminder;
  * Implementation of NodeVisitor with concrete logic.
  */
 public class ReminderVisitor extends NodeVisitor{
-    private Reminder reminder;
+    private final Reminder reminder;
 
     public ReminderVisitor(Reminder reminder) {
         this.reminder = reminder;

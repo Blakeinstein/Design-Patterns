@@ -8,7 +8,7 @@ import models.OfferingList;
  * A subclass of ListIterator to iterate over an Offeringlist.
  */
 public class OfferingIterator implements ListIterator<OfferingList, Offering> {
-    private OfferingList iterable;
+    private final OfferingList iterable;
     private int idx = 0;
 
     public OfferingIterator(OfferingList list) {

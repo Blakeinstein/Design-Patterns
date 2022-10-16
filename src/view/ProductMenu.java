@@ -1,31 +1,28 @@
 package view;
 
-import controller.Facade;
-import models.ClassProductList;
-
 public interface ProductMenu {
 
-    public void showMenu();
+    void showMenu();
 
     /**
      * To show the add buttons.
      */
-    public void showAddButton();
+    void showAddButton();
 
     /**
      * To show the view buttons.
      */
-    public void showViewButton();
+    void showViewButton();
 
     /**
      * To show the radio buttons.
      */
-    public void showRadioButton();
+    void showRadioButton();
 
     /**
      * To show the labels.
      */
-    public void showLabels();
+    void showLabels();
 
-    public void showComboxes();
+    void showComboxes();
 }
