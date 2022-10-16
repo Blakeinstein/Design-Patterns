@@ -12,9 +12,8 @@ public class ReminderVisitor extends NodeVisitor{
      * the product.
      * @param product Product to visit.
      */
-    @Override
     public void visitProduct(Product product) {
-
+        product.accept(this);
     }
 
     /**
@@ -23,9 +22,8 @@ public class ReminderVisitor extends NodeVisitor{
      * reminding information on the reminder.
      * @param trading Trading to visit.
      */
-    @Override
     public void visitTrading(Trading trading) {
-
+        trading.accept(this);
     }
 
     /**
@@ -33,8 +31,7 @@ public class ReminderVisitor extends NodeVisitor{
      * the facade's product list.
      * @param facade Facade to visit.
      */
-    @Override
     public void visitFacade(Facade facade) {
-
+        facade.accept(this);
     }
 }
