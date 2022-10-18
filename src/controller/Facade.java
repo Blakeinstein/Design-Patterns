@@ -376,7 +376,7 @@ public class Facade {
                                 null
                         )
                     );
-                    case Seller -> associatedProduct.addOffering(p.person);
+                    case Seller -> associatedProduct.addOffering(p.person).submit();
                 }
             }
 

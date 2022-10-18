@@ -87,16 +87,16 @@ public class Product {
     }
 
 
-    public void addOffering(Person p) throws Exception {
+    public Offering addOffering(Person p) throws Exception {
         var it = new OfferingIterator(this.offeringList);
         while (it.hasNext()) {
             if (it.Next().getPerson().getName().equals(p.getName())) {
                 throw new Exception("You already have an offering for this product");
             }
         }
-        this.offeringList.add(
-                new Offering(this, p)
-        );
+        var o = new Offering(this, p);
+        this.offeringList.add(o);
+        return o;
     }
 
     /**
