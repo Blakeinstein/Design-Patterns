@@ -19,7 +19,7 @@ public class NewProductMenu extends JDialog {
 
     private final NewProductHandler handler;
 
-    public NewProductMenu(NewProductHandler handler) {
+    public NewProductMenu(NewProductHandler handler, boolean showAssociation) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -39,6 +39,7 @@ public class NewProductMenu extends JDialog {
         // call dispose() on ESCAPE
         contentPane.registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         this.handler = handler;
+        this.associate.setVisible(showAssociation);
     }
 
     private void onOK() {
@@ -65,7 +66,7 @@ public class NewProductMenu extends JDialog {
      * @param handler response handler
      * @return a product menu instance
      */
-    public static ProductMenu CreateProductDialog(NewProductHandler handler) {
+    public static ProductMenu CreateProductDialog(NewProductHandler handler, boolean showAssociation) {
         Object[] opts = {
                 "Meat",
                 "Produce"
@@ -80,7 +81,7 @@ public class NewProductMenu extends JDialog {
                 opts[0]
         );
 
-        NewProductMenu dialog = new NewProductMenu(handler);
+        NewProductMenu dialog = new NewProductMenu(handler, showAssociation);
 
         if (selection == null) return null;
         return switch (selection) {

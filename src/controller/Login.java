@@ -15,6 +15,7 @@ import java.util.HashMap;
  * Login controller class, implements Facade and Singleton design pattern
  */
 public class Login {
+
     /**
      * Enum for user type
      * Buyer = 0
@@ -176,5 +177,13 @@ public class Login {
      */
     public boolean hasUser(String userName) {
         return this.users.containsKey(userName);
+    }
+
+    /**
+     * Returns the map from username to person;
+     * @return map of users.
+     */
+    public HashMap<String, LoginData> getUsers() {
+        return this.users;
     }
 }

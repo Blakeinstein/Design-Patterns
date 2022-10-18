@@ -46,7 +46,7 @@ public class Buyer extends Person{
      * @return an instance of a product menu
      */
     public ProductMenu CreateProductMenu(NewProductMenu.NewProductHandler handler) {
-        this.theProductMenu = NewProductMenu.CreateProductDialog(handler);
+        this.theProductMenu = NewProductMenu.CreateProductDialog(handler, false);
         return this.theProductMenu;
     }
 }

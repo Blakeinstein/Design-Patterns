@@ -78,7 +78,7 @@
                 <properties>
                   <opaque value="false"/>
                 </properties>
-                <border type="etched" title="Associated Products">
+                <border type="etched" title="All Products">
                   <title-color color="-4473925"/>
                 </border>
                 <children>

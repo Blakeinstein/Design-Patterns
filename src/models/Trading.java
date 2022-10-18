@@ -2,6 +2,7 @@ package models;
 
 import controller.NodeVisitor;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -21,10 +22,15 @@ public class Trading {
      */
     private final Date due;
 
-
     public Trading(Product product, Person person, Date due) {
         this.person = person;
         this.product = product;
+        if (due == null) {
+            var c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.DATE, 5);
+            due = c.getTime();
+        }
         this.due = due;
     }
 

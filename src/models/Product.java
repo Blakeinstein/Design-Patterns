@@ -1,6 +1,8 @@
 package models;
 
 import controller.NodeVisitor;
+import util.Files;
+import util.OfferingIterator;
 
 import java.util.ArrayList;
 
@@ -32,6 +34,11 @@ public class Product {
     private final ArrayList<Trading> tradings;
 
     /**
+     * List of offerings for the current product.
+     */
+    private final OfferingList offeringList;
+
+    /**
      * Overloaded constructor with string product type
      * @param productName name of the product
      * @param productType type of the product ("meat"/"produce")
@@ -44,6 +51,7 @@ public class Product {
        Name = productName;
        type = productType;
        this.tradings = new ArrayList<>();
+       this.offeringList = new OfferingList();
     }
 
     /**
@@ -76,6 +84,27 @@ public class Product {
      */
     public ArrayList<Trading> getTradings() {
         return this.tradings;
+    }
+
+
+    public void addOffering(Person p) throws Exception {
+        var it = new OfferingIterator(this.offeringList);
+        while (it.hasNext()) {
+            if (it.Next().getPerson().getName().equals(p.getName())) {
+                throw new Exception("You already have an offering for this product");
+            }
+        }
+        this.offeringList.add(
+                new Offering(this, p)
+        );
+    }
+
+    /**
+     * Get a list of offerings for the current product
+     * @return list of offerings
+     */
+    public OfferingList getOfferingList() {
+        return this.offeringList;
     }
 
     /**

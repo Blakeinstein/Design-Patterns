@@ -14,18 +14,12 @@ public abstract class Person {
     private final String name;
 
     /**
-     * List of associated products.
-     */
-    private final ClassProductList associatedProducts;
-
-    /**
      * Points to a concrete ProductMenu object.
      */
     public ProductMenu theProductMenu;
 
     public Person(String userName) {
         name = userName;
-        this.associatedProducts = new ClassProductList();
     }
 
     /**
@@ -36,13 +30,6 @@ public abstract class Person {
         return name;
     }
 
-    /**
-     * Associate a product to the person
-     * @param product product to associate.
-     */
-    public void addAssociatedProduct(Product product) {
-        this.associatedProducts.add(product);
-    }
 
     /**
      * Overridden by a class to show the menu.
@@ -76,19 +63,4 @@ public abstract class Person {
      */
 
     public abstract ProductMenu CreateProductMenu(NewProductMenu.NewProductHandler handler);
-
-    /**
-     * Gets the associated products with the person
-     * @return a product list
-     */
-    public ClassProductList getAssociatedProducts() {
-        return this.associatedProducts;
-    }
-
-    /**
-     * Clears associated products with the user.
-     */
-    public void resetAssociatedProducts() {
-        this.associatedProducts.clear();
-    }
 }

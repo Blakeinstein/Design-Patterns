@@ -27,6 +27,7 @@ public class AppView {
     private JButton markOffering;
     private JButton createReminder;
     private JButton viewTrading;
+    private JScrollPane borderText;
 
     private static AppView appInstance;
 
@@ -80,6 +81,10 @@ public class AppView {
         this.toolboxButtons.add(this.markOffering);
     }
 
+    /**
+     * Instantiate singleton if not already created and return the instance
+     * @return AppView instance
+     */
     public static AppView Get(){
         if (AppView.appInstance == null) {
             AppView.appInstance = new AppView();
@@ -142,6 +147,16 @@ public class AppView {
     }
 
     public ArrayList<JButton> getToolboxButtons() {
+        // clear action listeners
+        for (var b : this.toolboxButtons) {
+            for (var a : b.getActionListeners()) {
+                b.removeActionListener(a);
+            }
+        }
         return this.toolboxButtons;
+    }
+
+    public JScrollPane getBorderText() {
+        return this.borderText;
     }
 }

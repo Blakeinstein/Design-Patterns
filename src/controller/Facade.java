@@ -35,19 +35,22 @@ public class Facade {
      */
     private ClassProductList theProductList;
 
-    private final OfferingList offeringList;
-
     /**
      * The current user
      */
     private Person thePerson;
 
     /**
+     * New Offerings
+     */
+    private int newOfferings = 0;
+
+    /**
      * Public constructor
      */
     public Facade() {
         this.createProductList();
-        this.offeringList = new OfferingList();
+        this.attachProductToUser();
     }
 
     /**
@@ -61,8 +64,8 @@ public class Facade {
             this.thePerson = user.person;
             this.UserType = user.USERTYPE;
             AppView.Get().SetProductList(this.theProductList);
-            this.attachProductToUser();
             this.thePerson.showMenu(this);
+            this.newOfferings = 0;
             return true;
         } catch (Exception e) {
             System.out.println("Error in login");
@@ -84,37 +87,51 @@ public class Facade {
                     "Error adding trading",
                     JOptionPane.ERROR_MESSAGE
             );
-        } else {
-            var dialog = new TradingMenu(
-                    this.UserType,
-                    this.theSelectProduct.getName(),
-                    new TradingMenu.TradingMenuActions() {
-                        public void onOk(Date d) {
-                            Facade.this.theSelectProduct.addTrading(
-                                    new Trading(
-                                            Facade.this.theSelectProduct,
-                                            Facade.this.thePerson,
-                                            d
-                                    )
-                            );
-                            JOptionPane.showMessageDialog(
-                                    AppView.Get().getFrame(),
-                                    String.format(
-                                            "Product %s of type %s successfully marked as trading due on %s",
-                                            Facade.this.theSelectProduct.getName(),
-                                            Facade.this.nProductCategory == Product.PRODUCT_TYPE.Meat ? "Meat" : "Produce",
-                                            Utils.getDateFormatter().format(d)
-                                    ),
-                                    String.format("Successfully marked offering for %s", Facade.this.theSelectProduct.getName()),
-                                    JOptionPane.INFORMATION_MESSAGE
-                            );
-                        }
-                    }
-            );
-            dialog.pack();
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
+            return;
         }
+        for (var t : this.theSelectProduct.getTradings()) {
+            if (t.getPerson().getName().equals(this.thePerson.getName())) {
+                JOptionPane.showMessageDialog(
+                        AppView.Get().getFrame(),
+                        "A trading already exists for this product",
+                        "Error adding trading",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+        }
+        var dialog = new TradingMenu(
+                this.UserType,
+                this.theSelectProduct.getName(),
+                new TradingMenu.TradingMenuActions() {
+                    public void onOk(Date d) throws Exception {
+                        var trading = new Trading(
+                                Facade.this.theSelectProduct,
+                                Facade.this.thePerson,
+                                d
+                        );
+                        Facade.this.theSelectProduct.addTrading(trading);
+                        Files.WriteLineToFile(
+                                "UserProduct.txt",
+                                String.format("%s:%s", trading.getPerson().getName(), trading.getProduct().getName())
+                        );
+                        JOptionPane.showMessageDialog(
+                                AppView.Get().getFrame(),
+                                String.format(
+                                        "Product %s of type %s successfully marked as trading due on %s",
+                                        Facade.this.theSelectProduct.getName(),
+                                        Facade.this.nProductCategory == Product.PRODUCT_TYPE.Meat ? "Meat" : "Produce",
+                                        Utils.getDateFormatter().format(d)
+                                ),
+                                String.format("Successfully marked offering for %s", Facade.this.theSelectProduct.getName()),
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+                    }
+                }
+        );
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
 
     /**
@@ -142,7 +159,7 @@ public class Facade {
             for (var t : tradings) {
                 sb.append(
                         String.format(
-                                "Product: %s, Owner: %s, Due: %s",
+                                "Product: %s, Buyer: %s, Due: %s",
                                 t.getProduct().getName(),
                                 t.getPerson().getName(),
                                 Utils.getDateFormatter().format(t.getDueDate())
@@ -166,17 +183,18 @@ public class Facade {
      * View the given offering.
      */
     public void viewOffering() {
-        if (this.offeringList.size() == 0) {
+        var offerings = this.theSelectProduct.getOfferingList();
+        if (offerings.size() == 0) {
             JOptionPane.showMessageDialog(
                     AppView.Get().getFrame(),
-                    "No offerings to show",
+                    String.format("No offering to show for %s", this.theSelectProduct.getName()),
                     "Error viewing offering",
                     JOptionPane.ERROR_MESSAGE
             );
         } else {
             var dialog = new OfferingMenu(
                     this.UserType,
-                    this.offeringList
+                    offerings
             );
             dialog.pack();
             dialog.setLocationRelativeTo(null);
@@ -196,15 +214,24 @@ public class Facade {
                     JOptionPane.ERROR_MESSAGE
             );
         } else {
-            this.offeringList.add(
-                    new Offering(this.theSelectProduct, this.thePerson)
-            );
-            JOptionPane.showMessageDialog(
-                    AppView.Get().getFrame(),
-                    String.format("Marked offering for %s", this.theSelectProduct.getName()),
-                    String.format("New offering: %s", this.theSelectProduct.getName()),
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+            try {
+                this.theSelectProduct.addOffering(this.thePerson);
+                this.newOfferings++;
+                JOptionPane.showMessageDialog(
+                        AppView.Get().getFrame(),
+                        String.format("Marked offering for %s", this.theSelectProduct.getName()),
+                        String.format("New offering: %s", this.theSelectProduct.getName()),
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(
+                        AppView.Get().getFrame(),
+                        "You already have an offering for the product",
+                        "Error marking offering",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+
         }
     }
 
@@ -212,25 +239,44 @@ public class Facade {
      * Used to submit the offering.
      */
     public void submitOffering() {
-        var count = 0;
-        var it = new OfferingIterator(this.offeringList);
-        while (it.hasNext()) {
-            var next = it.Next();
-            if (next.submit()) count++;
-        }
-        if (count == 0) {
+        if (this.newOfferings == 0) {
             JOptionPane.showMessageDialog(
                     AppView.Get().getFrame(),
                     "No products marked as offering",
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
-        } else {
+            return;
+        }
+        try {
+            var it = new ProductIterator(this.theProductList);
+            var sb = new StringBuilder();
+            while (it.hasNext()) {
+                var p = it.Next();
+                var it2 = new OfferingIterator(p.getOfferingList());
+                while (it2.hasNext()) {
+                    var next = it2.Next();
+                    if (next.submit()) {
+                        sb.append(
+                                String.format("%s:%s", this.thePerson.getName(), p.getName())
+                        ).append("\n");
+                    }
+                }
+            }
+            Files.WriteLineToFile("UserProduct.txt", sb.toString());
             JOptionPane.showMessageDialog(
                     AppView.Get().getFrame(),
-                    String.format("%d products submitted for offering", count),
+                    String.format("%d products submitted for offering", this.newOfferings),
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE
+            );
+            this.newOfferings = 0;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    AppView.Get().getFrame(),
+                    e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
             );
         }
     }
@@ -300,33 +346,43 @@ public class Facade {
     public void attachProductToUser() {
         String userProductInfo = Files.GetUserProductInfo();
         try {
-            if (this.thePerson == null) throw new Exception("Person not known");
-            this.thePerson.resetAssociatedProducts();
+            var people = Login.GetInstance().getUsers();
             var userProductInfoPairs = Utils.GetPairs(userProductInfo);
-            var name = this.getLoggedInUserName();
-
             for (var parts : userProductInfoPairs) {
-                if (name.equals(parts[0])) {
-                    ProductIterator it = new ProductIterator(theProductList);
-                    Product associatedProduct = null;
-                    while (it.hasNext()) {
-                        Product next = it.Next();
-                        if (next.getName().equals(parts[1])) {
-                            associatedProduct = next;
-                            break;
-                        }
+                if (!people.containsKey(parts[0])) {
+                    throw new Exception(
+                            String.format("Unknown user %s in UserProduct.txt", parts[0])
+                    );
+                }
+                ProductIterator it = new ProductIterator(theProductList);
+                Product associatedProduct = null;
+                while (it.hasNext()) {
+                    Product next = it.Next();
+                    if (next.getName().equals(parts[1])) {
+                        associatedProduct = next;
+                        break;
                     }
-                    if (associatedProduct == null)
-                        throw new Exception(
-                                String.format("No matching product found with name %s in available product list.", parts[1])
-                        );
-                    thePerson.addAssociatedProduct(associatedProduct);
+                }
+                if (associatedProduct == null)
+                    throw new Exception(
+                            String.format("No matching product found with name %s in available product list.", parts[1])
+                    );
+                var p = people.get(parts[0]);
+                switch (p.USERTYPE) {
+                    case Buyer -> associatedProduct.addTrading(
+                        new Trading(
+                                associatedProduct,
+                                p.person,
+                                null
+                        )
+                    );
+                    case Seller -> associatedProduct.addOffering(p.person);
                 }
             }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
-                    AppView.Get().getFrame(),
+                    null,
                     e.getMessage(),
                     "Error in reading user product list.",
                     JOptionPane.ERROR_MESSAGE
@@ -339,7 +395,7 @@ public class Facade {
      */
     public void selectProduct(String productName) {
         ProductIterator it = new ProductIterator(
-                this.thePerson.getAssociatedProducts()
+                this.theProductList
         );
         while(it.hasNext()) {
             var next = it.Next();
@@ -376,12 +432,7 @@ public class Facade {
                                 String.format("%s:%s", type == Product.PRODUCT_TYPE.Meat ? "Meat" : "Produce", product.getName())
                         );
                         if (associate) {
-//                            product.addOffering()
-                            Facade.this.thePerson.addAssociatedProduct(product);
-                            Files.WriteLineToFile(
-                                    "UserProduct.txt",
-                                    String.format("%s:%s", Facade.this.thePerson.getName(), product.getName())
-                            );
+                            Facade.this.theSelectProduct.addOffering(Facade.this.thePerson);
                         }
                     }
                 }
@@ -398,7 +449,6 @@ public class Facade {
     public boolean logout() {
         this.UserType = null;
         this.thePerson = null;
-        this.offeringList.clear();
         return false;
     }
 

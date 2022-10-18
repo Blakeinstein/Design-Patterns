@@ -22,33 +22,37 @@
 
 - Implemented:
   
-  > 1. Person.CreateProductMenu, `src/models/Person.java:77` abstract function for
+  > 1. Person.ShowMenu, `src/models/Person.java:37` abstract function for
   >    
-  >    1. Buyer.CreateProductMenu, `src/models/Buyer.java:28`
+  >    1. Buyer.ShowMenu, `src/models/Buyer.java:24`
   >    
-  >    2. Seller.CreateProductMenu, `src/models/Seller.java:28`
+  >    2. Seller.ShowMenu, `src/models/Seller.java:25`
   > 
-  > 2. Both of the above serve as bridges to the respective create product menu as requested by the user.
+  > 2. Both of the above serve as bridges to the respective menus depending on the logged in user.
 
 - Called:
   
-  > Facade.productOperation, `src/controller/Facade.java:358` which serves as the bridging call, calling the respective create product menu functions depending on the logged in user.
+  > Facade.login, `src/controller/Facade.java:60` which serves as the bridging call, calling the logged in persons showMenu implementation.
 
 #### 3. Factory
 
 - Implemented:
   
-  > 1. Person.CreateProductMenu, `src/models/Person.java:77` abstract function for
+  > 1. Person.CreateProductMenu, `src/models/Person.java:65` abstract function for
   >    
-  >    1. Buyer.CreateProductMenu, `src/models/Buyer.java:28`
+  >    1. Buyer.CreateProductMenu, `src/models/Buyer.java:48`
   >    
-  >    2. Seller.CreateProductMenu, `src/models/Seller.java:28`
+  >    2. Seller.CreateProductMenu, `src/models/Seller.java:52`
   > 
-  > 2. Both of the above implement a factory method for their own product menu, which creates the appropriate product menu by invoking the constructor for NewProductMenu class, `src/view/NewProductMenu.java`
+  > 2. Both of the above implement a factory method for their own product menu, which creates the appropriate product menu by invoking the constructor for NewProductMenu class, `src/view/NewProductMenu.java` the actual factory method to instantiate appropriate ProductMenu interface objects, `src/view/ProductMenu.java` which is implemented by
+  >    
+  >    1. MeatProductMenu class,  `src/view/MeatProductMenu.java` 
+  >    
+  >    2. ProduceProductMenu class,  `src/view/ProduceProductMenu.java`
 
 - Called:
   
-  > 1. NewProductMenu.CreateProductDialog, `src/view/NewProductMenu.java:68`
+  > 1. NewProductMenu.CreateProductDialog, `src/view/NewProductMenu.java:69`
 
 #### 4. Iterator
 
@@ -64,11 +68,11 @@
   
   > 1. Facade class,
   >    
-  >    1. To check for if newly added product already exists. `src/controller/Facade.java:360`
+  >    1. To check for if newly added product already exists. `src/controller/Facade.java:419`
   >    
-  >    2. To set the currently selected product `src/controller/Facade.java:340`
+  >    2. To set the currently selected product `src/controller/Facade.java:397`
   >    
-  >    3. To submit marked offerings, `src/controller/Facade.java:214`
+  >    3. To find associated products for users loaded from disk, `src/controller/Facade.java:357`
   > 
   > 2. ClassProductList class, `src/models/ClassProductList.java:18` to pass the visitor to the products inside.
   > 
@@ -82,7 +86,7 @@
 
 - Called:
   
-  > Facade.remind, `src/controller/Facade.java:240`, creates a reminder object which is passed to the remindervisitor. The visitor visits the facade `src/controller/Facade.java:243`, then is passed down to its product list.`src/controller/Facade.java:415` The product list passes the visitor to the individual products `src/models/ClassProductList.java:18` and the products pass the visitor to its own tradings `src/models/Product.java:88`. When visiting the tradings, the visitor updates overdue and pending tradings for the reminder object `src/controller/ReminderVisitor.java:35`.
+  > Facade.remind, `src/controller/Facade.java:288`, creates a reminder object which is passed to the remindervisitor. The visitor visits the facade `src/controller/ReminderVisitor.java:57`, then is passed down to its product list.`src/controller/Facade.java:467` The product list passes the visitor to the individual products `src/models/ClassProductList.java:18` and the products pass the visitor to its own tradings `src/models/Product.java:115`. When visiting the tradings, the visitor updates overdue and pending tradings for the reminder object `src/controller/ReminderVisitor.java:35`.
 
 ### Extra Patterns
 
@@ -104,8 +108,6 @@
 
 > ***The project was made using intellij, and should only be compiled via intellij.***
 
-
-
 ### Via Intellij
 
 1. Open the project in intellij
@@ -125,9 +127,3 @@ All used data is present in the `Data` sub directory, new datasets can be placed
 2. User and product info doesn't live update and required application restart, but user-product relations can be updated by clicking refresh.
 
 3. The file data follow a particular format where, each new entry is in a new line and the parts of the data are seperate with a color `:` .
-
-
-
-
-
-

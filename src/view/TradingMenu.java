@@ -10,7 +10,7 @@ import java.util.Date;
 public class TradingMenu extends JDialog {
 
     public static class TradingMenuActions {
-        public void onOk(Date d) {}
+        public void onOk(Date d) throws Exception {}
     }
     private JPanel contentPane;
     private JButton buttonOK;
