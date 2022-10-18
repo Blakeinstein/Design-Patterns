@@ -7,6 +7,7 @@ import models.UserInformation;
 import util.ProductIterator;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  * Application GUI entry point.
@@ -23,11 +24,9 @@ public class AppView {
     private JPanel toolbox;
     private JButton addTrading;
     private JButton addProduct;
-    private JButton viewTrading;
     private JButton markOffering;
-    private JButton submitOffering;
     private JButton createReminder;
-    private JButton viewOffering;
+    private JButton viewTrading;
 
     private static AppView appInstance;
 
@@ -36,6 +35,8 @@ public class AppView {
     private final Facade facade;
 
     private boolean isUserLoggedIn = false;
+
+    private final ArrayList<JButton> toolboxButtons;
 
     private AppView() {
         // Create a facade to control app actions.
@@ -69,13 +70,14 @@ public class AppView {
 
         refresh.addActionListener(e -> AppView.this.facade.attachProductToUser());
 
-        addTrading.addActionListener(e -> AppView.this.facade.addTrading());
-        viewTrading.addActionListener(e -> AppView.this.facade.viewTrading());
         addProduct.addActionListener(e -> AppView.this.facade.productOperation());
-        viewOffering.addActionListener(e -> AppView.this.facade.viewOffering());
-        markOffering.addActionListener(e -> AppView.this.facade.markOffering());
-        submitOffering.addActionListener(e -> AppView.this.facade.submitOffering());
+
         createReminder.addActionListener(e -> AppView.this.facade.remind());
+
+        this.toolboxButtons = new ArrayList<>();
+        this.toolboxButtons.add(this.addTrading);
+        this.toolboxButtons.add(this.viewTrading);
+        this.toolboxButtons.add(this.markOffering);
     }
 
     public static AppView Get(){
@@ -125,8 +127,8 @@ public class AppView {
         this.productView.setVisible(this.isUserLoggedIn);
     }
 
-    public void SetProductList(ClassProductList associatedProducts) {
-        ProductIterator it = new ProductIterator(associatedProducts);
+    public void SetProductList(ClassProductList products) {
+        ProductIterator it = new ProductIterator(products);
         var newModel = new DefaultListModel<String>();
         while (it.hasNext()) {
             var prod = it.Next();
@@ -137,5 +139,9 @@ public class AppView {
 
     public void show() {
         this.frame.setVisible(true);
+    }
+
+    public ArrayList<JButton> getToolboxButtons() {
+        return this.toolboxButtons;
     }
 }

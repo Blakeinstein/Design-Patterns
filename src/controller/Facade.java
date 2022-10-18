@@ -60,7 +60,9 @@ public class Facade {
             if (user == null) return false; // the user pressed cancel.
             this.thePerson = user.person;
             this.UserType = user.USERTYPE;
+            AppView.Get().SetProductList(this.theProductList);
             this.attachProductToUser();
+            this.thePerson.showMenu(this);
             return true;
         } catch (Exception e) {
             System.out.println("Error in login");
@@ -321,7 +323,6 @@ public class Facade {
                     thePerson.addAssociatedProduct(associatedProduct);
                 }
             }
-            AppView.Get().SetProductList(this.thePerson.getAssociatedProducts());
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
@@ -375,6 +376,7 @@ public class Facade {
                                 String.format("%s:%s", type == Product.PRODUCT_TYPE.Meat ? "Meat" : "Produce", product.getName())
                         );
                         if (associate) {
+//                            product.addOffering()
                             Facade.this.thePerson.addAssociatedProduct(product);
                             Files.WriteLineToFile(
                                     "UserProduct.txt",
@@ -385,7 +387,7 @@ public class Facade {
                 }
         );
         if (productMenu != null) {
-            this.thePerson.showMenu();
+            productMenu.showMenu();
         }
     }
 

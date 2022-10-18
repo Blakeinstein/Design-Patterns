@@ -1,5 +1,6 @@
 package models;
 
+import controller.Facade;
 import view.NewProductMenu;
 import view.ProductMenu;
 
@@ -46,7 +47,7 @@ public abstract class Person {
     /**
      * Overridden by a class to show the menu.
      */
-    public abstract void showMenu();
+    public abstract void showMenu(Facade facade);
 
     /**
      * Calls implementation to show the add buttons.

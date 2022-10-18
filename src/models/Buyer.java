@@ -1,12 +1,17 @@
 package models;
 
+import controller.Facade;
+import view.AppView;
 import view.NewProductMenu;
 import view.ProductMenu;
+
+import javax.swing.*;
 
 /**
  * Class for buyer.
  */
 public class Buyer extends Person{
+
 
     public Buyer(String userName) {
         super(userName);
@@ -16,8 +21,23 @@ public class Buyer extends Person{
      * Show appropriate items on the menu as per the need
      * of the buyer.
      */
-    public void showMenu() {
-        this.theProductMenu.showMenu();
+    public void showMenu(Facade facade) {
+        var c = AppView.Get().getToolboxButtons();
+        var b1 = c.get(0);
+        var b2 = c.get(1);
+        var b3 = c.get(2);
+
+        b1.setText("Add Trading");
+        b1.setToolTipText("Add trading for the selected item");
+        b1.addActionListener(e -> facade.addTrading());
+        b1.setVisible(true);
+
+        b2.setText("View Offerings");
+        b2.setToolTipText("View offerings for the selected Item");
+        b2.addActionListener(e -> facade.viewOffering());
+        b2.setVisible(true);
+
+        b3.setVisible(false);
     }
 
     /**
