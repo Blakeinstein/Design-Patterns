@@ -1,5 +1,7 @@
 # PTBS
 
+**URL**: https://github.com/Blakeinstein/Design-Patterns
+
 ## Design Patterns
 
 ### Required Patterns
@@ -126,4 +128,4 @@ All used data is present in the `Data` sub directory, new datasets can be placed
 
 2. User and product info doesn't live update and required application restart, but user-product relations can be updated by clicking refresh.
 
-3. The file data follow a particular format where, each new entry is in a new line and the parts of the data are seperate with a color `:` .
+3. The file data follow a particular format where, each new entry is in a new line and the parts of the data are seperate with a colon `:` .
